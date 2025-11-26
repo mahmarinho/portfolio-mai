@@ -1728,16 +1728,18 @@ body.mode-oracle .portfolio-note {
 /* --- A. Warp Transition Veil --- */
 .warp-veil {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vmax;
-  height: 100vmax;
-  background: var(--bg-body);
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  background: var(--bg-body); 
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0);
   z-index: 9999;
-  transition: transform 0.6s cubic-bezier(0.75, 0, 0.25, 1);
+  
+  /* MUDANÇA: Sincronizado com o JS (0.5s) e curva mais agressiva */
+  transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1);
 }
 
 /* --- B. Mystic Cursor (Oracle Only) --- */
@@ -3132,3 +3134,91 @@ body.mode-oracle .nav-return {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
+/* --- CERTIFIQUE-SE QUE ISTO ESTÁ NO FINAL DO CSS E LEGÍVEL --- */
+
+@keyframes magicianFlash {
+  0% { filter: brightness(1); }
+  45% { filter: brightness(2); transform: scale(1.05); }
+  100% { filter: brightness(1); transform: scale(1); }
+}
+
+@keyframes chariotSlide {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes hangedSpin {
+  0% { transform: rotate(0); }
+  40% { transform: rotate(180deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes oracleFade {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
+
+/* ============================================
+   MYSTICAL TUNING (Warp & Cursor)
+   ============================================ */
+
+.warp-veil {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  background: var(--bg-body); /* Ou use #1a0f24 para ser sempre escuro na transição */
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 9999;
+  
+  /* MUDANÇA: Mais lento (1.2s) e curva dramática */
+  transition: transform 0.3s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+.mystic-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px; /* Um pouco maior */
+  height: 40px;
+  border-radius: 50%;
+  
+  /* Cor mais etérea com blur */
+  background: radial-gradient(circle, rgba(200, 180, 255, 0.8) 0%, rgba(121, 215, 188, 0.4) 50%, transparent 70%);
+  filter: blur(4px); /* O segredo do "fantasmagórico" */
+  
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: screen; /* Fica melhor sobre fundos escuros */
+  
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  
+  /* MUDANÇA: Adicionado transition no top/left para criar o "arrasto" */
+  transition: 
+    opacity 0.5s ease, 
+    transform 0.5s ease,
+    top 0.25s cubic-bezier(0.2, 0, 0.2, 1), /* Delay suave no movimento Y */
+    left 0.25s cubic-bezier(0.2, 0, 0.2, 1); /* Delay suave no movimento X */
+    
+  will-change: top, left, transform;
+}
+
+/* Animação de "respiração" do cursor */
+@keyframes cursorPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+}
+
+body.mode-oracle .mystic-cursor {
+  opacity: 1;
+  /* Ativa a respiração constante */
+  animation: cursorPulse 3s infinite ease-in-out;
+}

@@ -2,8 +2,10 @@
   'use strict';
 
   // =========================
-  // Helpers
+  // Shared Variables & Helpers
   // =========================
+  var warpVeil = document.querySelector('.warp-veil');
+  var body = document.body;
 
   function prefersReducedMotion() {
     return (
@@ -11,7 +13,6 @@
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     );
   }
-
   function smoothScrollTo(target) {
     if (!target) return;
     var behavior = prefersReducedMotion() ? 'auto' : 'smooth';
@@ -23,6 +24,45 @@
     }
   }
 
+// =========================
+  // The Warp Transition (Agile & Mystical)
+  // =========================
+  function performWarpTransition(callback) {
+    if (!warpVeil || prefersReducedMotion()) {
+      if (callback) callback();
+      return;
+    }
+
+    var baseTransform = 'translate(-50%, -50%)';
+
+    // 1. Reset
+    warpVeil.style.transition = 'none';
+    warpVeil.style.opacity = '1';
+    warpVeil.style.transform = baseTransform + ' scale(0)';
+    void warpVeil.offsetWidth; // Força reflow
+
+    // 2. Animate In (Fechar o véu)
+    // Reduzi de 1.2s para 0.8s (rápido o suficiente para não entediar, lento para ser místico)
+    warpVeil.style.transition = 'transform 0.6s cubic-bezier(0.7, 0, 0.3, 1)';
+    warpVeil.style.transform = baseTransform + ' scale(1)';
+
+    // 3. Troca de Conteúdo (Ponto Cego)
+    // Acontece aos 400ms (metade exata da animação de entrada)
+    setTimeout(function () {
+      if (callback) callback();
+    }, 400); 
+
+    // 4. Animate Out (Abrir o véu)
+    // Começa aos 800ms (assim que termina de fechar, sem pausa extra no escuro)
+    setTimeout(function () {
+      warpVeil.style.transform = baseTransform + ' scale(0)';
+      
+      // Opcional: Fade out rápido no fim para garantir que suma
+      setTimeout(function() { warpVeil.style.opacity = '0'; }, 600); 
+    }, 850); // Pequena margem de segurança (50ms) para garantir que a tela cobriu tudo
+  }
+
+  
   // =========================
   // SPA Router (Portal & Views)
   // =========================
@@ -34,12 +74,11 @@
   var views = [];
   var portal = null;
   var backBtn = null;
-  var body = document.body;
 
   function showView(targetId) {
     if (!targetId) return;
-    if (state.view === targetId) return;
-
+    // Permitir re-clicar no portal para resetar a view se necessário
+    
     var target;
     if (targetId === 'portal' || targetId === '#portal') {
       targetId = 'portal';
@@ -50,9 +89,12 @@
     }
     if (!target) return;
 
+    // Remove active class from all
     views.forEach(function (v) {
       v.classList.remove('active-view');
     });
+
+    // Add to target
     target.classList.add('active-view');
     state.view = targetId;
 
@@ -74,6 +116,7 @@
 
     if (!portal) return;
 
+    // Initial State
     body.classList.add('view-portal');
     portal.classList.add('active-view');
 
@@ -87,56 +130,53 @@
       if (!targetId) return;
       card.setAttribute('tabindex', '0');
 
-      function runCardRitual(callback) {
-        // remove rituais antigos
-        cards.forEach(function (c) {
-          c.classList.remove(
-            'magician-ritual',
-            'chariot-ritual',
-            'hanged-ritual'
-          );
-        });
+      function handleCardClick(evt) {
+        if (evt) {
+          if (evt.type === 'keydown' && !(evt.key === 'Enter' || evt.key === ' ')) return;
+          evt.preventDefault();
+        }
 
+        // 1. Run Card Ritual Animation
         var ritualClass = null;
         if (arcana === 'magician') ritualClass = 'magician-ritual';
         if (arcana === 'chariot') ritualClass = 'chariot-ritual';
         if (arcana === 'hanged') ritualClass = 'hanged-ritual';
 
-        if (!ritualClass || prefersReducedMotion()) {
-          if (typeof callback === 'function') callback();
-          return;
+        if (ritualClass && !prefersReducedMotion()) {
+           // Remove any stuck classes
+           cards.forEach(c => c.classList.remove('magician-ritual', 'chariot-ritual', 'hanged-ritual'));
+           
+           card.classList.add(ritualClass);
+           
+           // Wait for Ritual (600ms) then Warp
+           setTimeout(function() {
+             card.classList.remove(ritualClass);
+             
+             // 2. Trigger Warp & Switch View
+             performWarpTransition(function() {
+                showView(targetId);
+             });
+             
+           }, 600); // Synced with CSS animation duration
+        } else {
+           // No animation fallback
+           performWarpTransition(function() {
+              showView(targetId);
+           });
         }
-
-        card.classList.add(ritualClass);
-        setTimeout(function () {
-          card.classList.remove(ritualClass);
-          if (typeof callback === 'function') callback();
-        }, 450);
       }
 
-      function handleActivate(evt) {
-        if (evt) {
-          if (
-            evt.type === 'keydown' &&
-            !(evt.key === 'Enter' || evt.key === ' ')
-          ) {
-            return;
-          }
-          evt.preventDefault();
-        }
-        runCardRitual(function () {
-          showView(targetId);
-        });
-      }
-
-      card.addEventListener('click', handleActivate);
-      card.addEventListener('keydown', handleActivate);
+      card.addEventListener('click', handleCardClick);
+      card.addEventListener('keydown', handleCardClick);
     });
 
     if (backBtn) {
       backBtn.addEventListener('click', function (evt) {
         evt.preventDefault();
-        showView('portal');
+        // Warp back to portal
+        performWarpTransition(function() {
+           showView('portal');
+        });
       });
     }
 
@@ -153,28 +193,29 @@
     );
     if (!buttons.length) return;
 
-    var warpVeil = document.querySelector('.warp-veil');
     var currentMode = 'stage';
 
     function showOracleNote() {
-      // nota rápida "The veil lifts."
-      if (!document.body.classList.contains('mode-oracle')) return;
-
+      // Create note
       var note = document.createElement('div');
       note.className = 'oracle-enter-note';
       note.textContent = 'The veil lifts.';
       document.body.appendChild(note);
+      
+      // Force reflow
+      void note.offsetWidth; 
 
+      // Remove after animation
       setTimeout(function () {
         if (note && note.parentNode) {
           note.parentNode.removeChild(note);
         }
-      }, 3200);
+      }, 3500);
     }
 
     function applyMode(mode, opts) {
       opts = opts || {};
-      if (currentMode === mode) return;
+      if (currentMode === mode && !opts.force) return;
       currentMode = mode;
 
       buttons.forEach(function (btn) {
@@ -183,56 +224,26 @@
 
       if (mode === 'oracle') {
         body.classList.add('mode-oracle');
+        if (!opts.skipNote) showOracleNote();
       } else {
         body.classList.remove('mode-oracle');
       }
-
-      if (mode === 'oracle' && !opts.skipNote) {
-        showOracleNote();
-      }
-    }
-
-    function runWarpAndSetMode(mode) {
-      if (!warpVeil || prefersReducedMotion()) {
-        applyMode(mode);
-        return;
-      }
-
-      var baseTransform = 'translate(-50%, -50%)';
-
-      // reset
-      warpVeil.style.transition = 'none';
-      warpVeil.style.opacity = '1';
-      warpVeil.style.transform = baseTransform + ' scale(0)';
-      // força reflow
-      void warpVeil.offsetWidth;
-
-      warpVeil.style.transition =
-        'transform 0.6s cubic-bezier(0.75, 0, 0.25, 1), opacity 0.6s ease';
-      warpVeil.style.transform = baseTransform + ' scale(1)';
-
-      // aplica modo logo no começo da animação
-      setTimeout(function () {
-        applyMode(mode);
-      }, 120);
-
-      // recolhe o véu
-      setTimeout(function () {
-        warpVeil.style.transform = baseTransform + ' scale(0)';
-        warpVeil.style.opacity = '0';
-      }, 420);
     }
 
     buttons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var mode = btn.getAttribute('data-mode') || 'stage';
         if (mode === currentMode) return;
-        runWarpAndSetMode(mode);
+        
+        // Use the shared Warp Transition
+        performWarpTransition(function() {
+          applyMode(mode);
+        });
       });
     });
 
-    // modo inicial sem warp nem nota
-    applyMode('stage', { skipNote: true });
+    // Initial setup
+    applyMode('stage', { skipNote: true, force: true });
   }
 
   // =========================
@@ -244,10 +255,8 @@
     if (!bar) return;
 
     function update() {
-      var scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop || 0;
-      var docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
       var progress = docHeight > 0 ? scrollTop / docHeight : 0;
       bar.style.transform = 'scaleX(' + progress + ')';
     }
@@ -261,23 +270,15 @@
   // =========================
 
   function initRevealOnScroll() {
-    var els = Array.prototype.slice.call(
-      document.querySelectorAll('.reveal-on-scroll')
-    );
+    var els = Array.prototype.slice.call(document.querySelectorAll('.reveal-on-scroll'));
 
     if (!els.length) {
-      els = Array.prototype.slice.call(
-        document.querySelectorAll('main > section')
-      );
-      els.forEach(function (el) {
-        el.classList.add('reveal-on-scroll');
-      });
+      els = Array.prototype.slice.call(document.querySelectorAll('main > section'));
+      els.forEach(function (el) { el.classList.add('reveal-on-scroll'); });
     }
 
     if (!('IntersectionObserver' in window)) {
-      els.forEach(function (el) {
-        el.classList.add('is-visible');
-      });
+      els.forEach(function (el) { el.classList.add('is-visible'); });
       return;
     }
 
@@ -293,55 +294,41 @@
       { threshold: 0.15 }
     );
 
-    els.forEach(function (el) {
-      observer.observe(el);
-    });
+    els.forEach(function (el) { observer.observe(el); });
   }
 
   // =========================
-  // Mini Nav (bottom pills)
+  // Mini Nav & Active State
   // =========================
 
   function initMiniNav() {
-    var navs = Array.prototype.slice.call(
-      document.querySelectorAll('.mini-nav')
-    );
+    var navs = Array.prototype.slice.call(document.querySelectorAll('.mini-nav'));
     if (!navs.length) return;
-
+    
+    // Style logic moved to CSS usually, but keeping JS layout logic if needed
     navs.forEach(function (nav) {
-      nav.style.position = 'fixed';
-      nav.style.bottom = '24px';
-      nav.style.left = '50%';
-      nav.style.transform = 'translateX(-50%)';
-      nav.style.zIndex = '60';
+       // Optional: Ensure JS positioning if CSS isn't sticky enough
+    });
 
-      var buttons = Array.prototype.slice.call(
-        nav.querySelectorAll('.mini-nav__item')
-      );
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var selector =
-            btn.getAttribute('data-scroll') || btn.getAttribute('data-section');
-          if (!selector) return;
-          var target = document.querySelector(selector);
-          if (target) smoothScrollTo(target);
-        });
+    var allButtons = Array.prototype.slice.call(document.querySelectorAll('.mini-nav__item'));
+    allButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var selector = btn.getAttribute('data-scroll');
+        var target = document.querySelector(selector);
+        if (target) smoothScrollTo(target);
       });
     });
 
     if (!('IntersectionObserver' in window)) return;
 
-    var allButtons = Array.prototype.slice.call(
-      document.querySelectorAll('.mini-nav__item')
-    );
+    // Track active section for pills
     var sectionMap = {};
-
     allButtons.forEach(function (btn) {
-      var selector =
-        btn.getAttribute('data-scroll') || btn.getAttribute('data-section');
+      var selector = btn.getAttribute('data-scroll');
       if (!selector) return;
       var target = document.querySelector(selector);
       if (!target || !target.id) return;
+      
       var key = '#' + target.id;
       if (!sectionMap[key]) {
         sectionMap[key] = { section: target, buttons: [] };
@@ -357,9 +344,13 @@
           var mapped = sectionMap[id];
           if (!mapped) return;
 
-          allButtons.forEach(function (b) {
-            b.classList.remove('is-active');
+          // Clear active from this specific nav group
+          mapped.buttons.forEach(function(b) {
+             var parent = b.parentElement;
+             var siblings = parent.querySelectorAll('.mini-nav__item');
+             siblings.forEach(s => s.classList.remove('is-active'));
           });
+          
           mapped.buttons.forEach(function (b) {
             b.classList.add('is-active');
           });
@@ -374,7 +365,7 @@
   }
 
   // =========================
-  // Scroll to top button
+  // Scroll to top
   // =========================
 
   function initScrollTop() {
@@ -382,8 +373,7 @@
     if (!btn) return;
 
     function updateVisibility() {
-      var scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop || 0;
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
       if (scrollTop > 400) {
         btn.classList.add('is-visible');
       } else {
@@ -398,7 +388,6 @@
         behavior: prefersReducedMotion() ? 'auto' : 'smooth'
       });
     });
-
     updateVisibility();
   }
 
@@ -423,78 +412,41 @@
       { threshold: 0.35 }
     );
 
-    groups.forEach(function (g) {
-      observer.observe(g);
-    });
+    groups.forEach(function (g) { observer.observe(g); });
   }
 
-  // =========================
-  // Keyboard shortcuts (1–6)
-  // =========================
-
-  function initKeyboardShortcuts() {
-    var order = [
-      '#hero',
-      '#about',
-      '#experience',
-      '#how-i-work',
-      '#next-role',
-      '#anticase'
-    ];
-
-    document.addEventListener('keydown', function (event) {
-      var activeEl = document.activeElement;
-      if (
-        !event ||
-        !event.key ||
-        (activeEl &&
-          (activeEl.tagName === 'INPUT' ||
-            activeEl.tagName === 'TEXTAREA' ||
-            activeEl.isContentEditable))
-      ) {
-        return;
-      }
-
-      if (event.altKey || event.ctrlKey || event.metaKey) return;
-
-      var num = parseInt(event.key, 10);
-      if (!num || num < 1 || num > order.length) return;
-
-      var selector = order[num - 1];
-      var target = document.querySelector(selector);
-      if (!target) return;
-
-      event.preventDefault();
-      smoothScrollTo(target);
-    });
-  }
-
-  // =========================
-  // Mystic cursor (Oracle mode)
+// =========================
+  // Mystic cursor (Oracle mode) - CORRIGIDO
   // =========================
 
   function initMysticCursor() {
     var halo = document.querySelector('.mystic-cursor');
     if (!halo) return;
 
-    halo.style.opacity = '0';
+    // Garante que comece invisível se não estiver no oracle
+    if (!document.body.classList.contains('mode-oracle')) {
+        halo.style.opacity = '0';
+    }
 
     document.addEventListener('mousemove', function (e) {
+      // Se não for Oracle, esconde e para
       if (!document.body.classList.contains('mode-oracle')) {
         halo.style.opacity = '0';
         return;
       }
 
-      var x = e.clientX - halo.offsetWidth / 2;
-      var y = e.clientY - halo.offsetHeight / 2;
-
+      // Mostra o cursor
       halo.style.opacity = '1';
-      halo.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      
+      // MUDANÇA CRÍTICA: 
+      // Usamos left/top para posição, deixando o CSS cuidar do 'transform' (scale/translate)
+      // Isso evita que o JS mate a animação de escala do CSS.
+      halo.style.left = e.clientX + 'px';
+      halo.style.top = e.clientY + 'px';
     });
   }
-
   // =========================
-  // Glow / Spotlight (botões + xray)
+  // Glow / Spotlight
   // =========================
 
   function initGlowSpotlights() {
@@ -508,13 +460,8 @@
         el.style.setProperty('--x', e.clientX - rect.left + 'px');
         el.style.setProperty('--y', e.clientY - rect.top + 'px');
       });
-      el.addEventListener('mouseleave', function () {
-        el.style.removeProperty('--x');
-        el.style.removeProperty('--y');
-      });
     });
 
-    // xray nos arcos dos cases
     var xrayTargets = Array.prototype.slice.call(
       document.querySelectorAll('.xray-target')
     );
@@ -524,53 +471,36 @@
         el.style.setProperty('--x', e.clientX - rect.left + 'px');
         el.style.setProperty('--y', e.clientY - rect.top + 'px');
       });
-      el.addEventListener('mouseleave', function () {
-        el.style.removeProperty('--x');
-        el.style.removeProperty('--y');
-      });
     });
   }
 
   // =========================
-  // Tarot deck (closing cards)
+  // Tarot deck (Footer)
   // =========================
 
   function initTarotDeck() {
-    var cards = Array.prototype.slice.call(
-      document.querySelectorAll('.tarot-card')
-    );
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.tarot-deck .tarot-card'));
     if (!cards.length) return;
 
     cards.forEach(function (card) {
-      var inner = card.querySelector('.tarot-card-inner') || card;
       card.setAttribute('tabindex', '0');
-
       function flip(evt) {
         if (evt) {
-          if (
-            evt.type === 'keydown' &&
-            !(evt.key === 'Enter' || evt.key === ' ')
-          ) {
-            return;
-          }
-          evt.preventDefault();
+           if (evt.type === 'keydown' && !(evt.key === 'Enter' || evt.key === ' ')) return;
+           evt.preventDefault();
         }
         var isFlipped = card.classList.contains('is-flipped');
-        cards.forEach(function (c) {
-          c.classList.remove('is-flipped');
-        });
-        if (!isFlipped) {
-          card.classList.add('is-flipped');
-        }
+        // Reset others
+        cards.forEach(c => c.classList.remove('is-flipped'));
+        if (!isFlipped) card.classList.add('is-flipped');
       }
-
       card.addEventListener('click', flip);
       card.addEventListener('keydown', flip);
     });
   }
 
   // =========================
-  // Init all
+  // Init
   // =========================
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -581,7 +511,6 @@
     initMiniNav();
     initScrollTop();
     initMetricsObserver();
-    initKeyboardShortcuts();
     initTarotDeck();
     initMysticCursor();
     initGlowSpotlights();
