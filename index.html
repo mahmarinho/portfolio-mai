@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maira Mesel – Senior Product Designer & Strategist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Portfolio of Maíra Mesel – Senior Product Designer & Strategist working across fintech, startups and EdTechs."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="warp-veil"></div>
+  <div class="mystic-cursor"></div>
+  <div class="scroll-progress"></div>
+  <div class="view-indicator"></div>
+
+  <div class="mode-toggle" aria-label="Toggle visual mode">
+    <button class="mode-toggle__btn is-active" type="button" data-mode="stage">Stage</button>
+    <button class="mode-toggle__btn" type="button" data-mode="oracle">Oracle</button>
+  </div>
+
+  <!-- Back to portal button -->
+  <button id="back-to-portal" class="nav-return" type="button" aria-label="Back to portal">
+    ← Back to portal
+  </button>
+
+  <div class="page">
+    <!-- PORTAL -->
+    <section id="portal" class="portal-container active-view">
+      <div class="portal-content">
+        
+        <header class="portal-header">
+          <h1>Maira Mesel</h1>
+          <p class="portal-subtitle">Senior Product Designer & Strategist</p>
+        </header>
+
+        <p class="portal-instruction">The cards reveal your path. Choose one.</p>
+        <p class="portal-whisper"></p>
+
+        <div class="portal-cards">
+          
+          <div class="portal-card" role="button" data-target="view-profile" data-arcana="magician">
+            <div class="portal-card-inner">
+              <div class="portal-card-face">
+                <div class="card-frame">
+                  <div class="card-icon-box">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 52L20 20L32 28L44 12L56 32" />
+                      <circle cx="20" cy="20" r="3" />
+                      <circle cx="32" cy="28" r="3" />
+                      <circle cx="44" cy="12" r="3" />
+                      <circle cx="56" cy="32" r="3" />
+                      <path d="M10 56H54" />
+                    </svg>
+                  </div>
+                  <h3>The Magician</h3>
+                  <p class="card-label">Who is Mai</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="portal-card" role="button" data-target="view-impact" data-arcana="chariot">
+            <div class="portal-card-inner">
+              <div class="portal-card-face">
+                <div class="card-frame">
+                  <div class="card-icon-box">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="32" cy="32" r="12" fill="currentColor" fill-opacity="0.1"/>
+                      <circle cx="32" cy="32" r="12"/>
+                      <path d="M32 8V14 M32 50V56 M56 32H50 M14 32H8"/>
+                      <path d="M49 15L45 19 M19 45L15 49 M49 49L45 45 M19 19L15 15"/>
+                    </svg>
+                  </div>
+                  <h3>The Chariot</h3>
+                  <p class="card-label">Impact & Cases</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="portal-card" role="button" data-target="view-anticase" data-arcana="hanged">
+            <div class="portal-card-inner">
+              <div class="portal-card-face">
+                <div class="card-frame">
+                  <div class="card-icon-box">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 32C4 32 16 12 32 12C48 12 60 32 60 32C60 32 48 52 32 52C16 52 4 32 4 32Z" fill="currentColor" fill-opacity="0.05"/>
+                      <path d="M4 32C4 32 16 12 32 12C48 12 60 32 60 32C60 32 48 52 32 52C16 52 4 32 4 32Z"/>
+                      <circle cx="32" cy="32" r="10" />
+                      <circle cx="32" cy="32" r="4" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <h3>The Hanged Man</h3>
+                  <p class="card-label">The Anti-case</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      </div>
+    </section>
+
+    <div id="view-profile" class="view-section">
+      <nav class="mini-nav">
+        <button class="mini-nav__item" data-scroll="#hero">Intro</button>
+        <button class="mini-nav__item" data-scroll="#about">About</button>
+        <button class="mini-nav__item" data-scroll="#experience">Exp</button>
+        <button class="mini-nav__item" data-scroll="#how-i-work">How I work</button>
+      </nav>
+
+      <button class="scroll-top" aria-label="Scroll to top">↑</button>
+
+      <!-- HERO -->
+      <header id="hero" class="reveal-on-scroll">
+        <div>
+          <div class="eyebrow">portfolio portal · pick your entry point</div>
+          <h1>Maira Mesel</h1>
+          <h2>I design lovable, strategic products for messy, high-stakes environments.</h2>
+          <p class="hero-text--lead">
+            Senior product designer & strategist with 8+ years building digital products in fintechs, startups and EdTechs. I love complex, regulated problems where UX, business and people collide.
+          </p>
+          <p class="hero-text">
+            I move comfortably from 0→1 discovery to 1→n evolution, connecting qualitative insights, data and product strategy — while keeping interfaces clear, warm, and a little bit magical.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#selected-work" class="btn btn-primary">Browse selected work</a>
+            <a href="#anticase" class="btn btn-ghost">Read the anti-case</a>
+          </div>
+
+          <div class="hero-meta">
+            <span>Fintech · EdTech · Health</span>
+            <span>Discovery · Strategy · Delivery</span>
+            <span>Product-Led Growth · Gamification</span>
+          </div>
+        </div>
+
+        <aside class="hero-sidebar">
+          <div class="hero-avatar">
+            <img
+              src="https://images.pexels.com/photos/2706379/pexels-photo-2706379.jpeg?auto=compress&cs=tinysrgb&w=800"
+              alt="Portrait of Maira Mesel"
+              class="hero-profile-pic"
+            />
+          </div>
+          <p class="hero-sidebar-meta">
+            I’m a Brazilian designer, actress and tarot reader who enjoys turning ambiguity into systems, journeys and narratives that actually work — for the business and for the humans inside it.
+          </p>
+        </aside>
+      </header>
+
+      <!-- ABOUT -->
+      <main>
+        <section id="about" class="reveal-on-scroll">
+          <span class="section-kicker">About</span>
+          <h2>The intersection of strategy, craft and theatre.</h2>
+          <p class="section-intro">
+            I’ve worked across fintech, marketplaces, startups and EdTechs — mostly in high-risk, regulated environments where UX must balance compliance, conversion and trust. 
+            Outside of design, I’m a musical theatre actress and tarot reader, which deeply influences how I think about experience, storytelling and emotion in products.
+          </p>
+
+          <div class="section-body--two-col">
+            <div>
+              <p class="lead lead--label">A few themes you’ll find in my work:</p>
+              <p class="lead">
+                I like to get into the weeds of complex domains — anti-fraud, global accounts, medical education — and carve clear, human paths through them. 
+                My happy place is the overlap between product strategy, facilitation, discovery and hands-on design.
+              </p>
+
+              <p class="lead lead--label">What I’m good at:</p>
+              <ul class="list-bullets">
+                <li>Leading discovery and connecting user insights to business decisions.</li>
+                <li>Designing end-to-end flows in complex journeys (onboarding, money movement, learning paths).</li>
+                <li>Bringing teams along: PMs, devs, ops and stakeholders.</li>
+                <li>Using play, theatre and gamification to make experiences feel alive.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="lead lead--label">Some identities I switch between:</p>
+              <ul class="list-bullets">
+                <li>Senior product designer & strategist in high-stakes domains.</li>
+                <li>Musical theatre actress (soprano) and storyteller on stage.</li>
+                <li>Tarot reader focused on care, clarity and self-responsibility.</li>
+                <li>Facilitator who loves workshops, discovery rituals and collaborative decision-making.</li>
+              </ul>
+
+              <div class="pill-row">
+                <span class="pill">Product strategy</span>
+                <span class="pill">Discovery & research</span>
+                <span class="pill">Systems thinking</span>
+                <span class="pill">Gamification</span>
+                <span class="pill">Writing & storytelling</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="reveal-on-scroll">
+          <span class="section-kicker">Experience</span>
+          <h2>Where I’ve been putting in the reps.</h2>
+          <p class="section-intro">
+            I’ve spent the last years shipping products that sit at the intersection of risk, regulation and emotion — from anti-fraud flows for millions of users to a deeply personal, gamified EdTech experience for Brazilian medical students.
+          </p>
+
+          <div class="experience-grid">
+            <article class="experience-item">
+              <header class="experience-header">
+                <h3>Medway</h3>
+                <p class="experience-role">Senior Product Designer & Strategist</p>
+                <p class="experience-meta">2022 – 2025 · EdTech · São Paulo, BR (remote-first)</p>
+              </header>
+              <p>
+                Founding designer for Medway Academy, a new product dedicated to medical students in the clinical cycle. I led discovery, research and UX for a gamified learning experience that combined cases, flashcards, multiple-choice questions and tailored study plans.
+              </p>
+              <p>
+                I also evolved core Medway products (study maps, content delivery, trial simulations), working closely with PMs, medical specialists and leadership to align product bets with the company strategy.
+              </p>
+              <ul class="list-bullets">
+                <li>Led one of the most structured discovery efforts in the company to understand the clinical cycle ICP.</li>
+                <li>Designed key flows for onboarding, daily study, ranking, streaks and challenges inside the Academy.</li>
+                <li>Set up qualitative and quantitative feedback loops to continuously refine experience and content.</li>
+              </ul>
+            </article>
+
+            <article class="experience-item">
+              <header class="experience-header">
+                <h3>C6 Bank</h3>
+                <p class="experience-role">Product Designer</p>
+                <p class="experience-meta">2019 – 2022 · Fintech · São Paulo, BR</p>
+              </header>
+              <p>
+                Worked across multiple squads in a hyper-growth environment, designing for safety, trust and clarity in high-risk flows: anti-fraud, global accounts, money movement and customer support.
+              </p>
+              <ul class="list-bullets">
+                <li>Anti-fraud and “safe places” experiences that reduced friction while keeping users and the bank protected.</li>
+                <li>Wire transfer and global account flows for international cards, planned FX and cross-border payments.</li>
+                <li>Help center redesign focused on deflecting support tickets and improving self-service resolution.</li>
+              </ul>
+            </article>
+
+            <article class="experience-item">
+              <header class="experience-header">
+                <h3>Other experiences</h3>
+                <p class="experience-role">Design, theatre & tarot</p>
+                <p class="experience-meta">2015 – now · Hybrid practice</p>
+              </header>
+              <p>
+                Beyond product work, I co-create brands and visual identities, perform in musical theatre productions and run tarot sessions focused on care, clarity and emotional grounding.
+              </p>
+              <ul class="list-bullets">
+                <li>Branding and experience design for small businesses and creative projects.</li>
+                <li>Musical theatre performer in productions like Cinderella, Wicked and Mamma Mia.</li>
+                <li>Tarot reader for 5+ years, working with processes of healing, reflection and self-responsibility.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- HOW I WORK -->
+        <section id="how-i-work" class="reveal-on-scroll">
+          <span class="section-kicker">How I work</span>
+          <h2>Product, but make it theatre, lab and coven.</h2>
+          <p class="section-intro">
+            My practice lives at the intersection of rigorous discovery, clear communication and a bit of dramaturgy. I like to bring people into the process — not just the solution — so that decisions feel shared and grounded.
+          </p>
+
+          <div class="principles-grid">
+            <article class="principle-card">
+              <h3>Discovery as a continuous ritual</h3>
+              <p>
+                I treat discovery as an ongoing practice, not a phase. That means continuously talking to users, mapping signals and adjusting hypotheses — especially in environments where everything changes all the time.
+              </p>
+            </article>
+
+            <article class="principle-card">
+              <h3>Storytelling for alignment</h3>
+              <p>
+                I use narrative, visuals and prototypes to help teams see the same picture — and feel the consequences of decisions. Cases, journeys and anti-cases are part of how I bring strategy down to earth.
+              </p>
+            </article>
+
+            <article class="principle-card">
+              <h3>Care for the humans in the system</h3>
+              <p>
+                I look at users, teams and stakeholders as humans with constraints and emotions, not just roles. My background in theatre and tarot shows up as empathy, presence and the ability to hold ambiguity with care.
+              </p>
+            </article>
+
+            <article class="principle-card">
+              <h3>Grounded experimentation</h3>
+              <p>
+                I enjoy prototyping paths quickly, but always anchored in clear success metrics, guardrails and risk assessment — especially when dealing with money, health or learning outcomes.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- IMPACT VIEW -->
+    <div id="view-impact" class="view-section">
+      <nav class="mini-nav">
+        <button class="mini-nav__item" data-scroll="#selected-work">Cases</button>
+        <button class="mini-nav__item" data-scroll="#role-fit">Fit</button>
+        <button class="mini-nav__item" data-scroll="#portfolio-design">This portfolio</button>
+      </nav>
+
+      <main>
+        <!-- SELECTED WORK -->
+        <section id="selected-work" class="reveal-on-scroll">
+          <span class="section-kicker">Selected work</span>
+          <h2>Impact in messy, high-stakes environments.</h2>
+          <p class="section-intro">
+            These are not exhaustive case studies, but curated arcs that show how I think and operate: navigating ambiguity, rallying teams and designing experiences that balance risk, regulation and human reality.
+          </p>
+
+          <div class="case-grid">
+            <!-- C6 CARBON EXTRACT -->
+            <article
+              class="case case--split"
+              data-tooltip="Anti-fraud meets climate impact at scale."
+            >
+              <div class="case-content">
+                <p class="case-tag">Fintech · Sustainability · C6 Bank</p>
+                <h3>Carbon statement for 25M+ users.</h3>
+                <p>
+                  At C6 Bank, I helped design and ship a carbon statement experience that translated complex climate data into something users could actually understand and act on — inside their everyday banking app.
+                </p>
+                <div class="case-metrics">
+                  <span class="metric-pill">25M+ users reached</span>
+                  <span class="metric-pill">1054 tons of carbon credits in 2 months</span>
+                  <span class="metric-pill">Submitted to UN’s COP28</span>
+                </div>
+
+                <div class="case-foot">
+                  <p class="case-foot-label">My role</p>
+                  <p class="case-foot-text">
+                    Lead product designer for the carbon statement experience: research, UX flows, UI, interaction with climate partners and alignment with regulatory and brand constraints.
+                  </p>
+                </div>
+              </div>
+
+              <div class="case-visual-arc visual-carbon xray-target"></div>
+            </article>
+
+            <!-- C6 GLOBAL ACCOUNT -->
+            <article
+              class="case case--split"
+              data-tooltip="Global accounts that feel safe, clear and usable."
+            >
+              <div class="case-content">
+                <p class="case-tag">Fintech · Global accounts · C6 Bank</p>
+                <h3>Designing a global account and wire transfers.</h3>
+                <p>
+                  I led the design for C6’s global account, including international card flows, scheduled FX and wire transfers — balancing compliance, operational constraints and a clear, reassuring UX for users moving money abroad.
+                </p>
+                <div class="case-metrics">
+                  <span class="metric-pill">2+ years owning the product design</span>
+                  <span class="metric-pill">Improved visibility on taxes & FX</span>
+                  <span class="metric-pill">Better handling of edge cases & risk</span>
+                </div>
+
+                <div class="case-foot">
+                  <p class="case-foot-label">My role</p>
+                  <p class="case-foot-text">
+                    Lead designer for the global account squad: discovery with users, mapping flows end to end, designing UI and edge cases, supporting dev handoff and post-launch iteration.
+                  </p>
+                </div>
+              </div>
+
+              <div class="case-visual-arc visual-global-account xray-target"></div>
+            </article>
+
+            <!-- C6 HELP CENTER -->
+            <article
+              class="case case--split"
+              data-tooltip="Self-service that actually helps (and reduces tickets)."
+            >
+              <div class="case-content">
+                <p class="case-tag">Fintech · Support · C6 Bank</p>
+                <h3>Help center that respects people’s time.</h3>
+                <p>
+                  I redesigned the help center to make it easier for users to find answers, understand what’s going on with their accounts and choose the right channel — while reducing pressure on support teams.
+                </p>
+                <div class="case-metrics">
+                  <span class="metric-pill">Deflection of unnecessary tickets</span>
+                  <span class="metric-pill">Clearer taxonomy and search</span>
+                  <span class="metric-pill">More predictable support journeys</span>
+                </div>
+
+                <div class="case-foot">
+                  <p class="case-foot-label">My role</p>
+                  <p class="case-foot-text">
+                    Product designer across discovery, information architecture and UX writing; partnered with support ops and devs to make sure the experience reflected real-world complexity.
+                  </p>
+                </div>
+              </div>
+
+              <div class="case-visual-arc visual-help-center xray-target"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ROLE FIT -->
+        <section id="role-fit" class="reveal-on-scroll">
+          <span class="section-kicker">Role fit</span>
+          <h2>Where I tend to shine inside a team.</h2>
+          <p class="section-intro">
+            I’m happiest when I can move between discovery, strategy and hands-on design — especially in contexts where trust, risk and emotion are part of the equation.
+          </p>
+
+          <div class="role-fit-grid">
+            <article class="role-card">
+              <h3>Senior Product Designer</h3>
+              <p class="role-tagline">
+                Owning discovery + delivery in complex problem spaces.
+              </p>
+              <ul class="role-list">
+                <li>Lead discovery in messy, regulated domains.</li>
+                <li>Shape product strategy with PMs and leadership.</li>
+                <li>Design, prototype and ship experiences end to end.</li>
+              </ul>
+              <p class="role-ideal">
+                Ideal when you need someone to bring clarity, structure and warmth to complex journeys.
+              </p>
+            </article>
+
+            <article class="role-card">
+              <h3>Product Design Strategist</h3>
+              <p class="role-tagline">
+                Connecting research, product bets and org reality.
+              </p>
+              <ul class="role-list">
+                <li>Turn research and signals into strategic narratives.</li>
+                <li>Facilitate alignment across leadership and teams.</li>
+                <li>Define and track UX, engagement and business metrics.</li>
+              </ul>
+              <p class="role-ideal">
+                Ideal when you need to connect dots between products, roadmaps and long-term value.
+              </p>
+            </article>
+
+            <article class="role-card">
+              <h3>Hybrid creative</h3>
+              <p class="role-tagline">
+                Bringing theatre, tarot and storytelling into product.
+              </p>
+              <ul class="role-list">
+                <li>Design rituals, workshops and discovery practices.</li>
+                <li>Use storytelling and dramaturgy to make strategy tangible.</li>
+                <li>Support teams with presence, care and facilitation.</li>
+              </ul>
+              <p class="role-ideal">
+                Ideal for teams who want to experiment with more human, narrative-driven ways of working.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- PORTFOLIO DESIGN ITSELF -->
+        <section id="portfolio-design" class="reveal-on-scroll">
+          <span class="section-kicker">This portfolio</span>
+          <h2>A product designer building her own tiny product.</h2>
+          <p class="section-intro">
+            I designed this portfolio as a small product: an experience that reflects how I think about flow, navigation, narrative and delight — without losing clarity for busy hiring managers.
+          </p>
+
+          <div class="portfolio-design-grid">
+            <article class="portfolio-card">
+              <h3>Portal as navigation</h3>
+              <ul class="pd-list">
+                <li>Tarot-inspired portal that lets you choose how to meet me first.</li>
+                <li>Quick scanning for hiring managers, deeper paths for those who want more context.</li>
+                <li>Subtle theatrics without compromising usability.</li>
+              </ul>
+            </article>
+
+            <article class="portfolio-card">
+              <h3>Two modes: Stage & Oracle</h3>
+              <ul class="pd-list">
+                <li>Stage mode: cleaner, brighter, focused on clarity and readability.</li>
+                <li>Oracle mode: darker, more atmospheric, bringing my theatre and tarot side into the UI.</li>
+                <li>Mode toggle as a small narrative device, not just a theme switch.</li>
+              </ul>
+            </article>
+
+            <article class="portfolio-card">
+              <h3>Microinteractions & easter eggs</h3>
+              <ul class="pd-list">
+                <li>Tarot cards with hover states and a small ritual before you enter each path.</li>
+                <li>Metrics that gently pop into view as you scroll.</li>
+                <li>Footer tarot reading to close the experience with a smile.</li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="portfolio-note">
+            This portfolio will keep evolving. If you’d like to see more detailed case studies, I’m happy to walk you through them live — including constraints, trade-offs and anti-cases.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <!-- ANTI-CASE VIEW -->
+    <div id="view-anticase" class="view-section">
+      <nav class="mini-nav">
+        <button class="mini-nav__item" data-scroll="#anticase">Anti-case</button>
+        <button class="mini-nav__item" data-scroll="#anticase-lessons">Lessons</button>
+        <button class="mini-nav__item" data-scroll="#anticase-context">Context</button>
+      </nav>
+
+      <main>
+        <!-- ANTI-CASE -->
+        <section id="anticase" class="reveal-on-scroll">
+          <div class="anticase-inner">
+            <header class="anticase-header">
+              <div>
+                <div class="anticase-label">
+                  <span></span>
+                  ANTI-CASE · WHEN A GOOD PRODUCT ISN’T ENOUGH
+                </div>
+                <h2>Medway Academy: a robust, validated product that didn’t “win” — and what stayed with me.</h2>
+                <p class="anticase-deck lead lead--dropcap">
+                  Medway Academy was a bold bet: a new product for Brazilian medical students in the clinical cycle, built inside a company whose core ICP lives a few years ahead, in the internship phase. We built something innovative, loved by users and backed by a strong discovery practice — and still, the product was sunsetted.
+                </p>
+              </div>
+              <aside>
+                <div class="pull-quote">
+                  <p>
+                    “This is not a failure story. It’s the story of how a solid product can be sunsetted — and still leave deep value behind.”
+                  </p>
+                </div>
+
+                <!-- REMOVIDO metrics-in-view daqui para deixar animação por scroll -->
+                <div class="anticase-stats">
+                  <div class="anticase-stat">
+                    <span class="anticase-stat-value">11</span>
+                    <span class="anticase-stat-label">in-depth interviews</span>
+                  </div>
+                  <div class="anticase-stat">
+                    <span class="anticase-stat-value">300k</span>
+                    <span class="anticase-stat-label">BRL/month saved</span>
+                  </div>
+                  <div class="anticase-stat">
+                    <span class="anticase-stat-value">3–4</span>
+                    <span class="anticase-stat-label">MVPs validated</span>
+                  </div>
+                </div>
+              </aside>
+            </header>
+
+            <div class="anticase-layout">
+              <aside class="anticase-rail">
+                <span class="rail-label">Quick timeline</span>
+                <ul class="timeline">
+                  <li class="timeline__item is-active">2022 · Idea & early signals</li>
+                  <li class="timeline__item">2023 · Robust discovery & MVPs</li>
+                  <li class="timeline__item">2024 · Product sunset & learnings</li>
+                </ul>
+
+                <span class="rail-label">My role</span>
+                <p class="rail-text">
+                  Lead product designer for Medway Academy, working in a dedicated squad (PM, backend, frontend) and collaborating with content, marketing and leadership as they had capacity.
+                </p>
+
+                <span class="rail-label">Team setup</span>
+                <ul class="rail-list">
+                  <li>Dedicated squad: PM, PD, backend, frontend.</li>
+                  <li>Content, marketing and ops acting as satellites.</li>
+                  <li>Leadership involved in key decisions and bets.</li>
+                </ul>
+              </aside>
+
+              <article class="anticase-story">
+                <section class="anticase-block" id="anticase-context">
+                  <h3>Context · Why this product, in this company.</h3>
+                  <p>
+                    Medway is an EdTech focused on helping Brazilian medical students pass residency exams — especially those in the final years of medical school (the internship). Medway Academy emerged as a bet to support students earlier in their journey, during the clinical cycle, and position the brand as a reference sooner.
+                  </p>
+                  <p>
+                    The idea: offer an experience tailored to the daily reality of clinical cycle students, using cases, flashcards, questions and videos — all stitched together into study paths that respected their time, energy and cognitive load.
+                  </p>
+                  <p>
+                    This meant building a new product inside an organisation whose core structure, metrics and brand positioning were still strongly tied to the internship ICP.
+                  </p>
+                </section>
+
+                <section class="anticase-block">
+                  <h3>Discovery · A robust, well-structured process.</h3>
+                  <p>
+                    We ran a structured discovery to deeply understand the pains, rhythms and goals of clinical cycle students. This included qualitative interviews, diary-like sessions and multiple rounds of concept testing with prototypes.
+                  </p>
+                  <p>
+                    We mapped key problems: overload, lack of structure, fragmentation between college content and exam prep, emotional fatigue. From there, we explored different ways to orchestrate content and rituals that could make daily study lighter and more sustainable.
+                  </p>
+                  <div class="anticase-pills">
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Multi-method discovery</div>
+                      <p>
+                        Interviews, usability tests and opportunistic feedback inside the product, connecting signals over time.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Continuous validation</div>
+                      <p>
+                        Fast, low-cost MVPs to validate concepts before investing in full development.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Shared understanding</div>
+                      <p>
+                        Discovery artefacts that helped leadership and teams see the ICP and problem space clearly.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="anticase-block">
+                  <h3>Building · What we absolutely nailed.</h3>
+                  <p>
+                    We designed and shipped an innovative product that combined clinical cases, flashcards, multiple-choice questions and videos into structured study journeys. The experience leaned on gamification, streaks and ranking, but always with an eye on emotional sustainability.
+                  </p>
+                  <p>
+                    Behind the scenes, we created an automated content production system that drastically reduced manual work and made the product scalable and sustainable for the content team.
+                  </p>
+
+                  <div class="callout">
+                    The product’s core value proposition was validated with the right students, using a continuous discovery process that stayed alive despite organisational turbulence.
+                  </div>
+
+                  <div class="anticase-pills">
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Validated concept</div>
+                      <p>
+                        Strong qualitative signals of engagement, retention and perceived quality from clinical cycle students.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Automated content pipeline</div>
+                      <p>
+                        An automated, scalable content system that saved ~300k BRL/month during the product’s lifetime.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">Discovery muscle</div>
+                      <p>
+                        A replicable, continuous discovery practice that could be reused by other teams and products.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="anticase-block" id="anticase-lessons">
+                  <h3>Sunset · When a good product still doesn’t stay.</h3>
+                  <p>
+                    Even with a validated concept, strong user signals and a solid content engine, Medway Academy was sunsetted. The main reason: strategic focus and organisational constraints, not product quality.
+                  </p>
+                  <p>
+                    The company needed to concentrate efforts on the core ICP and products that were closer to the existing brand, sales and operational structure. Supporting a parallel product with a different ICP, positioning and go-to-market proved too costly at that moment.
+                  </p>
+
+                  <div class="callout--compact">
+                    What stayed: an innovative product, a continuous discovery practice, a scalable content system, and a shared understanding of a new ICP that can inform future bets.
+                  </div>
+
+                  <p>
+                    This experience reinforced a key lesson for me: a product can be “right” for users and still not be “right” for the organisation at a given time. As designers and product people, our job is also to understand and work with that tension.
+                  </p>
+
+                  <div class="anticase-pills">
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">What remained useful</div>
+                      <p>
+                        The content engine, discovery patterns and ICP learnings are likely to be reused by core products.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">What I carry forward</div>
+                      <p>
+                        Practices like zero-cost MVPs, continuous discovery and clear storytelling around trade-offs.
+                      </p>
+                    </div>
+                    <div class="anticase-pill">
+                      <div class="anticase-pill-title">What I now watch for</div>
+                      <p>
+                        Alignment between product bets, organisational timing, ICP and the actual capacity to support them.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER / TAROT -->
+        <section class="reveal-on-scroll">
+          <div class="fortune-container">
+            <p class="fortune-kicker">Closing the portal</p>
+            <h3 class="fortune-title">Pick a card to get a tiny reading on how we might work together.</h3>
+
+            <div class="tarot-deck">
+              <div class="tarot-card" data-archetype="strategist">
+                <div class="tarot-card-inner">
+                  <div class="tarot-front">
+                    <div class="card-pattern"></div>
+                  </div>
+                  <div class="tarot-back">
+                    <span class="archetype-icon">✶</span>
+                    <span class="archetype-title">The Strategist</span>
+                    <p class="archetype-desc">
+                      You’re likely looking for someone who can connect discovery, product bets and org reality. That’s where I’m at my best.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tarot-card" data-archetype="guardian">
+                <div class="tarot-card-inner">
+                  <div class="tarot-front">
+                    <div class="card-pattern"></div>
+                  </div>
+                  <div class="tarot-back">
+                    <span class="archetype-icon">☼</span>
+                    <span class="archetype-title">The Guardian</span>
+                    <p class="archetype-desc">
+                      You care about risk, trust and long-term relationships with users. I design with that lens, especially in high-stakes products.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tarot-card" data-archetype="playwright">
+                <div class="tarot-card-inner">
+                  <div class="tarot-front">
+                    <div class="card-pattern"></div>
+                  </div>
+                  <div class="tarot-back">
+                    <span class="archetype-icon">☾</span>
+                    <span class="archetype-title">The Playwright</span>
+                    <p class="archetype-desc">
+                      You want someone who can hold complexity and still tell a clear story — to users, stakeholders and teams. That’s what I love to do.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer>
+            <p>
+              If any of this resonates, I’d love to talk. You can reach me on
+              <a href="https://www.linkedin.com/in/maggie-mesel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              or by email at
+              <a href="mailto:mairamesel@gmail.com">mairamesel@gmail.com</a>.
+            </p>
+            <p class="micro-fortune">
+              This portfolio is a living product. New cases, anti-cases and experiments will keep appearing over time.
+            </p>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

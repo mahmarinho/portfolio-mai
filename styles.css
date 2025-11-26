@@ -1,0 +1,3134 @@
+/* ============================================
+   1. TOKENS & BASE THEME (Stage)
+   ============================================ */
+
+:root {
+  /* Palette */
+  --bg-body: #faf8f4;
+  --bg-card: #ffffff;
+
+  --text-main: #19151b;
+  --text-muted: #62576b;
+
+  --accent-primary: #952d2e;   /* vinho */
+  --accent-soft-1: #f2c6de;    /* rosa bruixinha */
+  --accent-soft-2: #c7b4ff;    /* lilás místico */
+  --accent-soft-3: #8fd4c1;    /* verde oráculo */
+  --accent-stroke: #e0dde8;
+
+  --highlighter: rgba(255, 240, 20, 0.65);
+
+  --gutter: clamp(20px, 5vw, 40px);
+  --max-width: 1000px;
+
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.06);
+}
+
+/* Oracle theme overrides via CSS variables */
+body.mode-oracle {
+  --bg-body: #130e1d;
+  --bg-card: #201428;
+
+  --text-main: #fdf7ff;
+  --text-muted: #d6c8f4;
+
+  --accent-primary: #f6b6cf;
+  --accent-soft-1: #f1b9dd;
+  --accent-soft-2: #a595ff;
+  --accent-soft-3: #79d7bc;
+  --accent-stroke: #3e314f;
+
+  --highlighter: rgba(116, 141, 250, 0.808);
+
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================
+   2. RESET + BODY BACKGROUND
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main);
+  background-color: var(--bg-body);
+
+  /* Fundo Pontilhado (Stage) */
+  background-image: radial-gradient(#d2c9e0 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+  
+  position: relative;
+  z-index: 0; 
+}
+
+/* Texture 1: Soft Paper Wash */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(250, 248, 244, 0.5); 
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Texture 2: Subtle Grain */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 3px 3px, 3px 3px;
+  opacity: 0.15;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+strong {
+  font-weight: 700;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    var(--highlighter) 0%,
+    var(--highlighter) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 90%;
+  background-position: 0 80%;
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+.page {
+  max-width: 100%;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(
+    90deg,
+    var(--accent-primary),
+    var(--accent-soft-2),
+    var(--accent-soft-3)
+  );
+  z-index: 120;
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   3. MODE TOGGLE
+   ============================================ */
+
+.mode-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 130;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-stroke);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.mode-toggle__btn {
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.mode-toggle__btn.is-active {
+  background: var(--text-main);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+body.mode-oracle .mode-toggle {
+  background: rgba(32, 21, 46, 0.96);
+  border-color: var(--accent-stroke);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+}
+
+body.mode-oracle .mode-toggle__btn {
+  color: var(--text-muted);
+}
+
+body.mode-oracle .mode-toggle__btn.is-active {
+  background: #fdf7ff;
+  color: #20142a;
+}
+
+@media (max-width: 900px) {
+  .mode-toggle {
+    top: 16px;
+    right: 16px;
+    padding: 3px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  }
+
+  .mode-toggle__btn {
+    padding: 5px 10px;
+    font-size: 0.65rem;
+  }
+}
+
+/* ============================================
+   4. NAV
+   ============================================ */
+
+.mini-nav {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 110;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: #201925;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.mini-nav__item {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #b4a9c7;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.mini-nav__item:hover {
+  color: #ffffff;
+}
+
+.mini-nav__item.is-active {
+  background: #3d2b4b;
+  color: #ffffff;
+}
+
+.scroll-top {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: #211827;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 100;
+}
+
+.scroll-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
+/* ============================================
+   5. LAYOUT
+   ============================================ */
+
+/* --- CORREÇÃO: Usar ID específico para não quebrar o Portal --- */
+header#hero {
+  min-height: 85vh;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px var(--gutter) 90px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1.1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+section {
+  position: relative;
+  padding-top: 14px;
+}
+
+main > section:not(:last-of-type)::after {
+  content: "☾ ✶ ☼";
+  display: block;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 0.95rem;
+  letter-spacing: 0.5em;
+  color: var(--accent-soft-2);
+  opacity: 0.7;
+}
+
+main > section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40px;
+  right: -40px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.12),
+    transparent
+  );
+  opacity: 0.8;
+}
+
+.section-kicker {
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  display: block;
+}
+
+section h2 {
+  font-family: "Fraunces", serif;
+  font-size: 2.8rem;
+  color: var(--text-main);
+  margin-bottom: 1.75rem;
+}
+
+.section-intro {
+  max-width: 60ch;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.section-body--two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 4rem;
+}
+
+/* ============================================
+   6. HERO
+   ============================================ */
+
+.eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 24px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--accent-primary);
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.eyebrow::after {
+  content: "☾✶";
+  font-size: 0.9rem;
+  color: var(--accent-soft-2);
+  opacity: 0.9;
+}
+
+header h1 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(3.6rem, 8vw, 7rem);
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  margin-left: -4px;
+}
+
+header h1::after {
+  content: "designer · actress · tarot reader";
+  display: block;
+  margin-top: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #9c91aa;
+}
+
+header h2 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.hero-text--lead {
+  font-size: 1.3rem;
+  max-width: 60ch;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.hero-text {
+  max-width: 64ch;
+  color: var(--text-muted);
+}
+
+.hero-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 14px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--text-main);
+  color: #ffffff;
+  border-color: var(--text-main);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+}
+
+.hero-meta {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hero-meta span {
+  background: #ffffff;
+  border: 1px solid var(--accent-stroke);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-main);
+}
+
+.hero-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.hero-avatar {
+  position: relative;
+  padding: 20px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 60%),
+    radial-gradient(circle at top left, var(--accent-soft-2), transparent 55%),
+    radial-gradient(circle at bottom right, var(--accent-soft-3), transparent 55%),
+    var(--bg-card);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+}
+
+@keyframes heroFloat {
+  from {
+    transform: translateY(18px) rotate(-2deg);
+  }
+  to {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+.hero-avatar {
+  animation: heroFloat 10s ease-in-out infinite alternate;
+}
+
+.hero-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.hero-avatar::after {
+  content: "✶  ✦  ✶";
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-profile-pic {
+  display: block;
+  width: 230px;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.hero-sidebar-meta {
+  max-width: 260px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ============================================
+   7. ABOUT
+   ============================================ */
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.lead--label {
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.6rem;
+}
+
+.list-bullets {
+  list-style: none;
+}
+
+.list-bullets li {
+  margin-bottom: 12px;
+  padding-left: 22px;
+  position: relative;
+  color: var(--text-main);
+}
+
+.list-bullets li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.pill-row {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 6px 11px;
+  border-radius: 6px;
+  border: 1px solid var(--accent-stroke);
+  color: var(--text-muted);
+  background: #faf8ff;
+}
+
+/* ============================================
+   8. EXPERIENCE
+   ============================================ */
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.experience-item {
+  background: var(--bg-card);
+  padding: 28px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--accent-stroke);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.experience-item:hover {
+  transform: translateY(-4px) rotate(-0.3deg);
+  border-color: var(--text-main);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+}
+
+.experience-header {
+  margin-bottom: 4px;
+}
+
+.experience-item h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.35rem;
+}
+
+.experience-role {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.experience-meta {
+  font-size: 0.85rem;
+  color: #9c91aa;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee5ff;
+  margin-bottom: 8px;
+}
+
+/* ============================================
+   9. SELECTED WORK – CASES WITH ARCS
+   ============================================ */
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.case {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-stroke);
+  border-radius: var(--radius-card);
+  position: relative;
+  overflow: visible;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* --- Split Card Layout (Text + Arc) --- */
+.case--split {
+  padding: 0; 
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: 1 coluna */
+  overflow: hidden; /* Para o arco não vazar */
+  gap: 0;
+}
+
+/* Desktop: Lado a Lado */
+@media (min-width: 900px) {
+  .case--split {
+    grid-template-columns: 1.1fr 0.9fr; 
+    align-items: stretch;
+  }
+}
+
+/* Mobile: Capa no Topo (Opção A) */
+@media (max-width: 899px) {
+  .case--split {
+    display: flex;
+    flex-direction: column-reverse; /* Texto embaixo, Arco em cima */
+  }
+}
+
+.case:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-main);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.12);
+}
+
+.case-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 899px) {
+  .case-content {
+    padding: 32px 24px;
+  }
+}
+
+.case-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.case h3 {
+  font-size: 1.8rem;
+  font-family: "Fraunces", serif;
+  margin-bottom: 12px;
+}
+
+/* --- O ARCO VISUAL (Direita) --- */
+.case-visual-arc {
+  /* MUDANÇA AQUI: de '100%' para 'auto' para respeitar a margem */
+  width: auto; 
+  height: 240px; /* Altura fixa no mobile */
+  
+  background-color: var(--accent-soft-2); 
+  border-radius: 200px 200px 0 0; 
+  
+  /* Margens no Mobile: respira nas laterais e topo */
+  margin: 24px 24px 0 24px; 
+  
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-bottom: none;
+  
+  /* Transição suave de cores */
+  transition: background-image 0.5s ease-in-out, background-color 0.5s ease;
+}
+
+/* DESKTOP (Ajuste lateral) */
+@media (min-width: 900px) {
+  .case-visual-arc {
+    height: auto; 
+    min-height: 100%;
+    
+    /* MUDANÇA AQUI:
+       Topo: 40px | Direita: 40px | Baixo: 0 | Esquerda: 0
+       Isso garante que ele não encoste na borda direita do card.
+    */
+    margin: 40px 40px 0 0; 
+    
+    border-radius: 200px 200px 0 0;
+  }
+}
+/* Ajuste Desktop */
+@media (min-width: 900px) {
+  .case-visual-arc {
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-bottom: 0;
+    min-height: auto;
+  }
+}
+
+/* Ajuste Mobile */
+@media (max-width: 899px) {
+  .case-visual-arc {
+    margin: 24px 24px 0 24px;
+    height: 240px; 
+  }
+}
+
+/* --- CORES & IMAGENS (Stage vs Oracle) --- */
+
+/* Stage: Cores frescas */
+.visual-help-center    { background-color: #e3f2fd; } 
+.visual-global-account { background-color: #f3e5f5; } 
+.visual-carbon         { background-color: #e8f5e9; } 
+
+/* Oracle: Cores escuras */
+body.mode-oracle .case-visual-arc {
+  background-color: #2b1a3a !important;
+  border-color: rgba(255,255,255,0.1);
+  background-blend-mode: luminosity;
+}
+
+/* !! AQUI VOCÊ COLOCA AS URLS DAS IMAGENS DEPOIS !! */
+/* Exemplo:
+.visual-global-account { background-image: url('caminho/da/imagem-ui.png'); }
+body.mode-oracle .visual-global-account { background-image: url('caminho/da/imagem-sketch.png'); }
+*/
+
+
+/* metrics */
+.case-metrics {
+  margin-top: 16px;
+}
+
+.metric-pill {
+  display: inline-block;
+  background: #f7f4ff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+/* tooltip discreto */
+.case[data-tooltip]::after {
+  content: "✦  " attr(data-tooltip);
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  padding: 5px 12px 6px;
+  max-width: 260px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background: #ffffff;
+  color: var(--text-main);
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(2px);
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.case:hover[data-tooltip]::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes metricPopSubtle {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes metricGlowSubtle {
+  0% {
+    background-color: inherit;
+    box-shadow: none;
+  }
+  100% {
+    background-color: #fffdf2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.metrics-in-view .metric-pill {
+  animation:
+    metricPopSubtle 0.3s ease-out forwards,
+    metricGlowSubtle 0.6s ease-out forwards;
+}
+
+.metrics-in-view .anticase-stat-value {
+  animation: metricPopSubtle 0.3s ease-out forwards;
+}
+
+/* Oracle metrics */
+body.mode-oracle .metric-pill,
+body.mode-oracle .metrics-in-view .metric-pill {
+  background-color: #fdf7ff !important;
+  color: #20142a !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  font-weight: 600;
+}
+
+/* ============================================
+   10. ANTI-CASE
+   ============================================ */
+
+#anticase {
+  background: var(--bg-card);
+  border: 2px solid var(--text-main);
+  border-radius: 26px;
+  padding: 60px;
+  overflow: hidden;
+  box-shadow: 14px 14px 0 var(--text-main);
+}
+
+.anticase-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.anticase-label span {
+  width: 32px;
+  height: 1px;
+  background: var(--text-main);
+}
+
+.anticase-header {
+  background: #faf6ff;
+  margin: -60px -60px 40px -60px;
+  padding: 60px;
+  border-bottom: 2px solid var(--text-main);
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.anticase-deck {
+  font-size: 1.25rem;
+  font-family: "Fraunces", serif;
+  color: var(--text-main);
+  max-width: 45ch;
+  margin: 18px 0 32px;
+}
+
+.pull-quote {
+  max-width: 260px;
+  margin-left: auto;
+  font-size: 1rem;
+  position: relative;
+}
+
+.pull-quote::before {
+  content: "✶";
+  position: absolute;
+  top: -18px;
+  left: -8px;
+  font-size: 1.2rem;
+  color: var(--accent-primary);
+}
+
+.pull-quote p {
+  background: #ffffff;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid #111;
+  box-shadow: 6px 6px 0 #111;
+}
+
+.anticase-stats {
+  display: flex;
+  border: 1px solid var(--text-main);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.anticase-stat {
+  flex: 1;
+  padding: 18px;
+  text-align: center;
+  border-right: 1px solid var(--text-main);
+}
+
+.anticase-stat:last-child {
+  border-right: none;
+}
+
+.anticase-stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  line-height: 1;
+  margin: 8px 0;
+}
+
+.anticase-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #999999;
+}
+
+.anticase-stat-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.anticase-layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  border-top: 1px solid #eee;
+  padding-top: 36px;
+  gap: 40px;
+}
+
+.anticase-rail {
+  background: #fffdfb;
+  padding-right: 32px;
+  border-right: 1px solid #eee;
+  position: relative;
+}
+
+.rail-label {
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 20px;
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.rail-list {
+  list-style: none;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.rail-list li {
+  margin-bottom: 10px;
+}
+
+.rail-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.anticase-story {
+  padding-left: 40px;
+}
+
+.anticase-block {
+  margin-bottom: 48px;
+}
+
+.anticase-block h3 {
+  font-size: 1.4rem;
+  background: var(--text-main);
+  color: #ffffff;
+  display: inline-block;
+  padding: 4px 12px;
+  transform: rotate(-1deg);
+  margin-bottom: 20px;
+}
+
+.lead--dropcap::first-letter {
+  font-family: "Fraunces", serif;
+  float: left;
+  font-size: 3rem;
+  line-height: 0.9;
+  padding-right: 8px;
+  padding-top: 4px;
+}
+
+.anticase-pills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.anticase-pill {
+  background: #ffe6ea;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.anticase-pill-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+}
+
+.callout {
+  background: #ffe6ea;
+  border-left: 4px solid var(--accent-primary);
+  padding: 18px;
+  margin-top: 18px;
+  font-style: italic;
+  color: var(--text-main);
+}
+
+.callout--compact {
+  position: relative;
+  background: #fff7c9;
+  border-left: none;
+  padding: 18px 18px 20px;
+  margin-top: 18px;
+  font-style: normal;
+  border-radius: 10px;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+  transform: rotate(-1.2deg);
+}
+
+.callout--compact::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  border: 1px solid #cccccc;
+  transform: translateX(-50%);
+}
+
+body.mode-oracle #anticase {
+  background-color: #241632;
+}
+
+body.mode-oracle #anticase .anticase-header {
+  background-color: #1b1027;
+  border-bottom-color: var(--accent-stroke);
+}
+
+body.mode-oracle #anticase .anticase-deck,
+body.mode-oracle #anticase h2,
+body.mode-oracle #anticase .anticase-block h3,
+body.mode-oracle #anticase .anticase-block p,
+body.mode-oracle #anticase .anticase-block li,
+body.mode-oracle #anticase .rail-label,
+body.mode-oracle #anticase .rail-list li,
+body.mode-oracle #anticase .rail-text {
+  color: var(--text-main);
+}
+
+body.mode-oracle #anticase .anticase-rail {
+  background-color: #1b1027;
+  border-right-color: var(--accent-stroke);
+}
+
+body.mode-oracle #anticase .anticase-stats {
+  background-color: #1a0f24;
+  border-color: var(--accent-stroke);
+}
+
+body.mode-oracle #anticase .anticase-stat-value {
+  color: var(--accent-primary);
+}
+
+body.mode-oracle #anticase .anticase-stat-label {
+  color: var(--text-muted);
+}
+
+body.mode-oracle #anticase .pull-quote p {
+  background-color: #2b1a3a;
+  border-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.8);
+}
+
+body.mode-oracle #anticase .callout,
+body.mode-oracle #anticase .callout--compact {
+  color: var(--text-main);
+  background-color: #2b1a3a;
+}
+
+/* ============================================
+   11. TIMELINE
+   ============================================ */
+
+.timeline {
+  list-style: none;
+  margin-top: 28px;
+  border-left: 1px dashed rgba(0, 0, 0, 0.25);
+  padding-left: 12px;
+}
+
+.timeline__item {
+  position: relative;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 0 6px 12px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  background: var(--bg-body);
+}
+
+.timeline__item.is-active {
+  color: var(--accent-primary);
+  transform: translateX(2px);
+}
+
+/* ============================================
+   12. HOW I WORK
+   ============================================ */
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.principle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-stroke);
+  padding: 26px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.principle-card::before {
+  content: "✧";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 1.1rem;
+  color: var(--accent-soft-3);
+  opacity: 0.6;
+}
+
+.principle-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  border-color: var(--text-main);
+}
+
+.principle-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 10px;
+}
+
+/* ============================================
+   13. FOOTER
+   ============================================ */
+
+footer {
+  margin-top: 40px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+footer p + p {
+  margin-top: 6px;
+}
+
+footer a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  color: var(--accent-primary);
+}
+
+footer a:hover {
+  color: var(--text-main);
+}
+
+.micro-fortune {
+  margin-top: 18px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   14. RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+  header {
+    padding-top: 90px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-sidebar {
+    align-items: center;
+  }
+
+  .hero-avatar {
+    animation: none;
+    transform: none;
+  }
+
+  .hero-sidebar-meta {
+    text-align: center;
+  }
+
+  .section-body--two-col {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  main > section::before {
+    left: 0;
+    right: 0;
+  }
+
+  #anticase {
+    padding: 32px;
+  }
+
+  .anticase-header {
+    margin: -32px -32px 32px -32px;
+    padding: 28px;
+    flex-direction: column;
+  }
+
+  .anticase-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .anticase-rail {
+    border-right: none;
+    border-bottom: 1px solid var(--text-main);
+    padding-right: 0;
+    padding-bottom: 22px;
+  }
+
+  .anticase-story {
+    padding-left: 0;
+  }
+
+  .anticase-stats {
+    flex-direction: column;
+  }
+
+  .anticase-stat {
+    border-right: none;
+    border-bottom: 1px solid var(--text-main);
+  }
+
+  .anticase-stat:last-child {
+    border-bottom: none;
+  }
+
+  .mini-nav {
+    bottom: 16px;
+  }
+
+  .scroll-top {
+    bottom: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar,
+  .case,
+  .experience-item,
+  .principle-card {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ============================================
+   15. ORACLE BACKGROUND & MAGIC UI
+   ============================================ */
+
+/* ============================================
+   15. ORACLE BACKGROUND & MAGIC UI
+   ============================================ */
+
+/* Fundo Místico Profundo (Roxo/Índigo) */
+body.mode-oracle {
+  /* Cor de fundo base (caso a imagem falhe) */
+  background-color: #120821;
+
+  background-image:
+    /* Estrelas (mantidas) */
+    radial-gradient(circle at 10% 18%, rgba(247, 233, 255, 0.3) 1.2px, transparent 1.2px),
+    radial-gradient(circle at 78% 70%, rgba(121, 215, 188, 0.25) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 22% 88%, rgba(255, 240, 220, 0.2) 1.1px, transparent 1.1px),
+    
+    /* NOVO GRADIENTE MÍSTICO: */
+    /* Vai do Roxo Ametista escuro -> Índigo Profundo -> Quase preto */
+    linear-gradient(160deg, #2a1644 0%, #130a24 50%, #05020a 100%);
+    
+  background-size: 180px 180px, 220px 220px, 260px 260px, auto;
+  background-attachment: fixed; /* Garante que o fundo fique fixo ao rolar */
+}
+
+/* Véu de atmosfera (Luz Etérea) */
+body.mode-oracle::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* Um brilho roxo sutil vindo do topo, sumindo para baixo */
+  background: radial-gradient(
+    circle at 50% -10%, 
+    rgba(165, 149, 255, 0.12) 0%, 
+    rgba(20, 10, 40, 0.4) 60%, 
+    rgba(5, 2, 10, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: -2;
+  mix-blend-mode: normal; /* Modo normal para garantir que a cor apareça */
+}
+
+
+body.mode-oracle .btn-primary {
+  background: #fdf7ff;
+  color: #20142a;
+  border-color: #fdf7ff;
+}
+
+body.mode-oracle .btn-ghost {
+  background: rgba(253, 247, 255, 0.08);
+  border-color: #fdf7ff;
+  color: #fdf7ff;
+}
+
+body.mode-oracle .hero-meta span {
+  background: rgba(253, 247, 255, 0.18);
+  border-color: rgba(253, 247, 255, 0.75);
+  color: #fdf7ff;
+}
+
+#about .section-body--two-col > div:last-child {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--accent-stroke);
+  box-shadow: var(--shadow-soft);
+  padding: 24px 24px 20px;
+}
+
+#about .section-body--two-col > div:last-child p,
+#about .section-body--two-col > div:last-child li {
+  color: var(--text-main);
+}
+
+body.mode-oracle #about .pill {
+  background: rgba(253, 247, 255, 0.10);
+  border-color: rgba(253, 247, 255, 0.7);
+  color: #fdf7ff;
+}
+
+.case-foot {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+.case-foot-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.case-foot-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+body.mode-oracle .case-foot {
+  border-top-color: rgba(253, 247, 255, 0.35);
+}
+
+body.mode-oracle .case-foot-text {
+  color: var(--text-main);
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.quote-card {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--accent-stroke);
+  padding: 22px 22px 18px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.quote-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-main);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.14);
+}
+
+.quote-mark {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--accent-soft-2);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.quote-text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-top: 12px;
+}
+
+.quote-meta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+body.mode-oracle .quote-mark {
+  color: var(--accent-soft-3);
+  opacity: 0.45;
+}
+
+.role-fit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.role-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--accent-stroke);
+  box-shadow: var(--shadow-soft);
+  padding: 22px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.role-card::before {
+  content: "✶";
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 1.1rem;
+  color: var(--accent-soft-2);
+  opacity: 0.5;
+}
+
+.role-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  color: var(--text-main);
+}
+
+.role-tagline {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.role-list {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.role-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.role-list li::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  top: 0;
+  color: var(--accent-primary);
+}
+
+.role-ideal {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-main);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+}
+
+body.mode-oracle .role-card::before {
+  color: var(--accent-soft-3);
+}
+
+.portfolio-design-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.portfolio-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--accent-stroke);
+  box-shadow: var(--shadow-soft);
+  padding: 22px 22px 20px;
+}
+
+.portfolio-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.pd-list {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.pd-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.pd-list li::before {
+  content: "→";
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.portfolio-note {
+  margin-top: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+body.mode-oracle .portfolio-note {
+  background: rgba(24, 15, 36, 0.96);
+  border-color: rgba(253, 247, 255, 0.28);
+}
+
+/* --- A. Warp Transition Veil --- */
+.warp-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vmax;
+  height: 100vmax;
+  background: var(--bg-body);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 9999;
+  transition: transform 0.6s cubic-bezier(0.75, 0, 0.25, 1);
+}
+
+/* --- B. Mystic Cursor (Oracle Only) --- */
+.mystic-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(165, 149, 255, 0.4) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 9998;
+  mix-blend-mode: exclusion;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition: opacity 0.3s ease, transform 0.1s linear;
+  will-change: transform;
+}
+
+body.mode-oracle .mystic-cursor {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 20px 5px rgba(121, 215, 188, 0.4);
+}
+
+@media (hover: none) {
+  .mystic-cursor { display: none; }
+}
+
+/* --- C. Spotlight / Glow Buttons --- */
+.btn,
+.mode-toggle__btn,
+.mini-nav__item {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before,
+.mode-toggle__btn::before,
+.mini-nav__item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%), 
+    var(--glow-color) 0%, 
+    transparent 65%
+  );
+  
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn:hover::before,
+.mode-toggle__btn:hover::before,
+.mini-nav__item:hover::before {
+  opacity: 1;
+}
+
+body:not(.mode-oracle) .btn,
+body:not(.mode-oracle) .mode-toggle__btn,
+body:not(.mode-oracle) .mini-nav__item {
+  --glow-color: rgba(255, 240, 20, 0.15); 
+}
+
+body.mode-oracle .btn,
+body.mode-oracle .mode-toggle__btn,
+body.mode-oracle .mini-nav__item {
+  --glow-color: rgba(143, 212, 193, 0.25); 
+}
+
+/* ============================================
+   16. TAROT FOOTER INTERACTION
+   ============================================ */
+
+.fortune-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.fortune-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-primary);
+  margin-bottom: 8px;
+}
+
+.fortune-title {
+  font-family: "Fraunces", serif;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  margin-bottom: 32px;
+}
+
+.tarot-deck {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  perspective: 1000px;
+  flex-wrap: wrap;
+  z-index: 10;
+  position: relative;
+}
+
+.tarot-card {
+  width: 200px;
+  height: 300px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tarot-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.tarot-card.is-flipped .tarot-card-inner {
+  transform: rotateY(180deg);
+}
+
+.tarot-front,
+.tarot-back {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--accent-stroke);
+  box-shadow: var(--shadow-soft);
+}
+
+.tarot-front {
+  background-color: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-pattern {
+  width: 160px;
+  height: 260px;
+  border: 1px solid var(--accent-stroke);
+  border-radius: 8px;
+  background-image: 
+    radial-gradient(circle at center, var(--accent-soft-2) 2px, transparent 2.5px),
+    radial-gradient(circle at center, var(--accent-soft-1) 1px, transparent 1.5px);
+  background-size: 20px 20px, 30px 30px;
+  background-position: 0 0, 15px 15px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.tarot-card:hover:not(.is-flipped) .tarot-card-inner {
+  transform: translateY(-10px);
+}
+
+.tarot-card:hover .card-pattern {
+  opacity: 1;
+}
+
+.tarot-back {
+  background-color: #ffffff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: 1px solid var(--accent-primary);
+}
+
+.archetype-icon {
+  font-size: 1.8rem;
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.archetype-title {
+  font-family: "Fraunces", serif;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #19151b;
+}
+
+.archetype-desc {
+  font-size: 0.85rem;
+  color: #62576b;
+  line-height: 1.5;
+}
+
+body.mode-oracle .tarot-front {
+  background-color: #2b1a3a;
+  border-color: var(--accent-stroke);
+}
+
+body.mode-oracle .card-pattern {
+  background-image: 
+    radial-gradient(circle at center, var(--accent-soft-2) 1.5px, transparent 1.5px);
+  border-color: rgba(255,255,255,0.1);
+}
+
+body.mode-oracle .tarot-back {
+  background-color: #1a0f24;
+  border-color: var(--accent-soft-3);
+}
+
+body.mode-oracle .archetype-title {
+  color: #fdf7ff;
+}
+
+body.mode-oracle .archetype-desc {
+  color: #d6c8f4;
+}
+
+@media (max-width: 700px) {
+  .tarot-deck {
+    gap: 12px;
+  }
+  .tarot-card {
+    width: 140px;
+    height: 220px;
+  }
+  .archetype-icon { font-size: 1.4rem; margin-bottom: 8px;}
+  .archetype-title { font-size: 0.9rem; margin-bottom: 8px;}
+  .archetype-desc { font-size: 0.7rem; }
+}
+
+/* ============================================
+   UPDATED: SPLIT CASES WITH ARCS (Full Text)
+   ============================================ */
+
+/* Removemos o layout antigo de "Hiring Manager" se houver sobra de CSS */
+.hm-browse, .highlighted-layout {
+  display: block; /* Reseta o layout antigo de 2 colunas da seção */
+}
+
+/* O Card Container */
+.case--split {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: 1 coluna empilhada */
+  padding: 0; /* Remove padding do card pai pra controlar dentro */
+  gap: 0;
+  overflow: hidden; /* Para cortar o arco se precisar */
+}
+
+/* Conteúdo de Texto (Esquerda) */
+.case-content {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* O Arco Visual (Direita/Topo) */
+.case-visual-arc {
+  width: 100%;
+  height: 240px; /* Altura fixa no mobile */
+  background-color: var(--accent-soft-2); /* Cor base temporária */
+  border-radius: 200px 200px 0 0; /* O formato do Arco */
+  margin: 24px 24px 0 24px; /* Margem para soltar das bordas */
+  
+  /* Preparado para imagem */
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-bottom: none;
+}
+
+/* DESKTOP (Lado a Lado) */
+@media (min-width: 900px) {
+  .case--split {
+    grid-template-columns: 1.2fr 0.8fr; /* Texto ganha mais espaço (60/40) */
+    align-items: stretch;
+  }
+
+  .case-content {
+    padding: 40px; /* Mais respiro no desktop */
+  }
+
+  .case-visual-arc {
+    height: auto; /* Altura automática pra acompanhar o texto */
+    min-height: 100%;
+    margin: 40px 40px 0 0; /* Encostado na direita, com margem no topo */
+    border-radius: 200px 200px 0 0;
+  }
+}
+
+/* Mobile Order: Arco em cima, Texto embaixo */
+@media (max-width: 899px) {
+  .case--split {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .case-visual-arc {
+    flex-shrink: 0;
+  }
+}
+
+/* Cores temporárias para os Arcos (pra você visualizar a mudança) */
+.visual-help-center    { background-color: #e3f2fd; } 
+.visual-global-account { background-color: #f3e5f5; } 
+.visual-carbon         { background-color: #e8f5e9; }
+
+/* Ajuste fino do Case Foot (Garante que sempre aparece) */
+.case-foot {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  display: block !important; /* Força visibilidade */
+  opacity: 1 !important;
+}
+
+/* Oracle Mode adjustments */
+body.mode-oracle .case-foot {
+  border-top-color: rgba(253, 247, 255, 0.35);
+}
+
+body.mode-oracle .case-visual-arc {
+  background-color: #2b1a3a !important;
+  border-color: rgba(255,255,255,0.1);
+}
+
+
+/* Mantenha todo o seu CSS original (que já está ótimo) e adicione este bloco AO FINAL do arquivo */
+
+/* ============================================
+   17. PORTAL & NAVIGATION (REFINED)
+   ============================================ */
+
+/* Esconde as views por padrão */
+.view-section {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* Mostra a view ativa */
+.active-view {
+  display: block;
+  opacity: 1;
+  animation: fadeInView 0.8s ease forwards;
+}
+
+@keyframes fadeInView {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- THE PORTAL CONTAINER --- */
+.portal-container {
+  min-height: 100vh;
+  display: none; /* Controlado via JS */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+.portal-container.active-view {
+  display: flex;
+}
+
+.portal-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza tudo horizontalmente */
+  gap: 20px;
+}
+
+/* --- PORTAL HEADER (Centered & Balanced) --- */
+.portal-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.portal-eyebrow {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.portal-header h1 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  line-height: 1.1;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* Divisor Decorativo */
+.portal-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 24px auto;
+  opacity: 0.4;
+  width: 100%;
+  max-width: 300px;
+}
+
+.portal-separator .line {
+  height: 1px;
+  flex: 1;
+  background: var(--text-main);
+}
+
+.portal-separator .star {
+  font-size: 1.2rem;
+  color: var(--accent-soft-2);
+}
+
+.portal-subtitle {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.portal-instruction {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  margin-top: 20px;
+  opacity: 0.7;
+}
+
+/* --- PORTAL CARDS (RICH ICONS) --- */
+.portal-cards {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  perspective: 1000px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.portal-card {
+  width: 250px; 
+  height: 380px;
+  cursor: pointer;
+  position: relative;
+  /* Animação suave de entrada */
+  animation: floatUp 0.8s ease-out backwards;
+}
+
+.portal-card:nth-child(1) { animation-delay: 0.1s; }
+.portal-card:nth-child(2) { animation-delay: 0.2s; }
+.portal-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.portal-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+.portal-card:hover .portal-card-inner {
+  transform: translateY(-16px);
+}
+
+.portal-card-face {
+  position: absolute;
+  inset: 0;
+  /* Fundo sutil tipo papel */
+  background: linear-gradient(135deg, #fffbf2 0%, #ffffff 100%);
+  border: 1px solid var(--accent-stroke);
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.04),
+    0 2px 8px rgba(0,0,0,0.02);
+  padding: 12px;
+  display: flex;
+}
+
+/* Moldura Interna (The Frame) */
+.card-frame {
+  flex: 1;
+  border: 1px solid var(--accent-stroke);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  /* Pattern de fundo sutil */
+  background-image: radial-gradient(var(--accent-stroke) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+/* Ícones SVG Enriquecidos */
+.card-icon-box {
+  color: var(--text-main);
+  margin-bottom: 32px;
+  transition: all 0.5s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Efeito Glow no Hover */
+.portal-card:hover .card-icon-box {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 15px var(--accent-soft-1));
+}
+
+.portal-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.35rem;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  background: linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.8) 100%); 
+  padding: 4px 8px;
+  z-index: 2;
+}
+
+.card-decoration {
+  font-size: 12px;
+  color: var(--accent-soft-2);
+  margin: 6px 0;
+}
+
+.card-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* --- ORACLE MODE ADJUSTMENTS --- */
+body.mode-oracle .portal-card-face {
+  background: linear-gradient(135deg, #201428 0%, #130e1d 100%);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+body.mode-oracle .card-frame {
+  border-color: rgba(255,255,255,0.08);
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+}
+
+body.mode-oracle .card-icon-box {
+  color: var(--accent-soft-2);
+}
+
+body.mode-oracle .portal-card:hover .card-icon-box {
+  color: #fff;
+  filter: drop-shadow(0 0 20px var(--accent-soft-2));
+}
+
+body.mode-oracle .portal-card h3 {
+  color: #fdf7ff;
+  background: none;
+}
+
+body.mode-oracle .card-label {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-muted);
+  border-color: transparent;
+}
+
+body.mode-oracle .portal-separator .line {
+  background: var(--accent-stroke);
+}
+
+/* Ajuste Mobile */
+@media (max-width: 700px) {
+  .portal-header h1 {
+    font-size: 3.5rem;
+  }
+  .portal-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .portal-card {
+    width: 100%;
+    max-width: 300px;
+    height: 280px; /* Mais compacto no mobile */
+  }
+  .card-icon-box svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* ============================================
+   18. EASTER EGGS STYLES
+   ============================================ */
+
+/* A. CRYSTAL ORB */
+.crystal-orb-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  cursor: help;
+}
+
+.crystal-orb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--accent-soft-2), var(--accent-primary));
+  box-shadow: 0 0 15px var(--accent-soft-2);
+  animation: floatOrb 3s infinite ease-in-out;
+  transition: transform 0.2s;
+}
+
+.crystal-orb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px var(--accent-soft-1);
+}
+
+.crystal-fortune {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--accent-primary);
+  min-height: 1.6em;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.crystal-fortune.revealed {
+  opacity: 1;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* B. X-RAY LENS */
+.case-visual-arc {
+  position: relative;
+  overflow: hidden; 
+  cursor: none; 
+}
+
+.xray-target::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #2b1a3a; 
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  /* Cria um círculo vazado onde o mouse está */
+  clip-path: circle(80px at var(--x) var(--y));
+}
+
+.xray-target:hover::after {
+  opacity: 1;
+}
+
+/* C. INVISIBLE INK */
+.invisible-ink {
+  font-family: "Caveat", "Indie Flower", cursive, serif;
+  font-style: italic;
+  color: var(--accent-soft-1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.6s ease;
+  margin: 8px 0;
+  display: block;
+}
+
+body.mode-oracle .invisible-ink {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hand-note {
+  font-size: 0.95rem;
+  background: rgba(255, 255, 200, 0.1);
+  padding: 8px 12px;
+  border-radius: 4px;
+  border-left: 2px solid var(--accent-soft-1);
+}
+
+.rotate-left { transform: rotate(-1deg); }
+.rotate-right { transform: rotate(1deg); }
+
+@media (max-width: 700px) {
+  .portal-cards { flex-direction: column; align-items: center; }
+  .xray-target::after { display: none; }
+}
+
+/* ============================================
+   17. PORTAL & NAVIGATION (REFINED & CENTERED)
+   ============================================ */
+
+.portal-container {
+  min-height: 100vh;
+  display: none; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.portal-container.active-view {
+  display: flex;
+}
+
+/* O Cabeçalho do Portal deve ser 100% centralizado */
+.portal-header {
+  text-align: center;
+  margin-bottom: 60px;
+  display: flex;       /* Garante flexbox */
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente */
+  width: 100%;
+}
+
+.portal-header h1 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.portal-subtitle {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.portal-instruction {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--accent-primary);
+  margin-bottom: 40px;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* --- CARDS & ICONS --- */
+.portal-cards {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.portal-card {
+  width: 260px;
+  height: 380px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.portal-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.portal-card:hover .portal-card-inner {
+  transform: translateY(-12px);
+}
+
+.portal-card-face {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-stroke);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* Moldura Interna Decorativa */
+.card-frame {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--accent-stroke);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(var(--accent-stroke) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ÍCONES SVG PERSONALIZADOS */
+.card-icon-box {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+  color: var(--text-main);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.portal-card:hover .card-icon-box {
+  transform: scale(1.15);
+  color: var(--accent-primary);
+}
+
+.portal-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  background: var(--bg-card); /* Fundo para ler sobre os pontos */
+  padding: 0 8px;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--accent-stroke);
+}
+
+/* Oracle Mode Fixes */
+body.mode-oracle .portal-card-face {
+  background: #201428;
+  border-color: rgba(255,255,255,0.1);
+}
+body.mode-oracle .card-frame {
+  border-color: rgba(255,255,255,0.05);
+  background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+}
+body.mode-oracle .portal-card h3, 
+body.mode-oracle .card-label {
+  background: #201428;
+  color: #fff;
+}
+body.mode-oracle .card-icon-box {
+  color: var(--accent-soft-2);
+}
+
+/* ============================================
+   17. PORTAL: CELESTIAL VOID (FINAL)
+   ============================================ */
+
+/* Configuração do Container Principal */
+.portal-container {
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+
+  /* --- 1. FORÇAR TEMA ESCURO NO PORTAL --- */
+  /* Isso garante legibilidade independente do modo do site */
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --accent-primary: #ffcdf3; /* Rosa claro brilhante */
+  --accent-stroke: rgba(255, 255, 255, 0.2);
+  --bg-card: rgba(20, 10, 30, 0.6); 
+
+  /* Cor do texto base */
+  color: var(--text-main);
+  
+  /* --- 2. AURORA BOREAL VIBRANTE --- */
+  /* Mistura de Preto Profundo, Roxo Elétrico, Azul Meia-noite e Magenta */
+  background: linear-gradient(
+    125deg, 
+    #050011 0%,   /* Quase preto */
+    #180c2e 25%,  /* Roxo escuro */
+    #2a0a38 50%,  /* Ameixa vibrante */
+    #001836 75%,  /* Azul profundo */
+    #050011 100%
+  );
+  background-size: 300% 300%;
+  animation: auroraFlow 20s ease infinite;
+}
+
+@keyframes auroraFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.portal-container.active-view {
+  display: flex;
+}
+
+/* --- 3. ESTRELAS ASSIMÉTRICAS (Parallax) --- */
+/* Camada 1: Estrelas pequenas e distantes */
+.portal-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 10% 10%, white 100%, transparent),
+    radial-gradient(1px 1px at 20% 80%, white 100%, transparent),
+    radial-gradient(1px 1px at 45% 40%, white 100%, transparent),
+    radial-gradient(1px 1px at 70% 20%, white 100%, transparent),
+    radial-gradient(1px 1px at 85% 90%, white 100%, transparent),
+    radial-gradient(1.5px 1.5px at 50% 50%, white 100%, transparent),
+    radial-gradient(1px 1px at 90% 10%, white 100%, transparent);
+  background-size: 500px 500px; /* Repetição grande para quebrar simetria */
+  opacity: 0.4;
+  animation: twinkle 4s infinite alternate;
+  pointer-events: none;
+}
+
+/* Camada 2: Estrelas médias (menos densas) */
+.portal-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 15% 15%, rgba(255,255,255,0.9) 100%, transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,0.8) 100%, transparent),
+    radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.9) 100%, transparent);
+  background-size: 700px 700px;
+  opacity: 0.6;
+  animation: starFloat 60s linear infinite; /* Movem devagar */
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes starFloat {
+  from { transform: translateY(0); }
+  to { transform: translateY(-700px); }
+}
+
+/* --- HEADER & TYPOGRAPHY --- */
+.portal-header {
+  text-align: center;
+  margin-bottom: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.portal-header h1 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(4rem, 9vw, 6rem);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: #fff;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.portal-subtitle {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85); /* Mais brilho */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.portal-instruction {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--accent-primary);
+  margin-bottom: 40px;
+  text-align: center;
+  animation: pulseGlow 2.5s infinite alternate;
+  z-index: 2;
+}
+
+@keyframes pulseGlow {
+  from { opacity: 0.6; text-shadow: 0 0 0 transparent; }
+  to { opacity: 1; text-shadow: 0 0 15px var(--accent-primary); }
+}
+
+/* --- CARDS (GLASS & READABILITY) --- */
+.portal-cards {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: 100%;
+  z-index: 10;
+}
+
+.portal-card {
+  width: 260px;
+  height: 380px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.portal-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+.portal-card:hover .portal-card-inner {
+  transform: translateY(-16px) scale(1.02);
+}
+
+/* Face da carta – Glass Dark */
+.portal-card-face {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 10, 25, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  display: flex;
+  transition: all 0.3s ease;
+}
+
+.portal-card:hover .portal-card-face {
+  background: rgba(30, 20, 50, 0.75);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.5),
+    0 0 30px rgba(180, 150, 255, 0.15);
+}
+
+/* Moldura Interna */
+.card-frame {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 14px 14px;
+}
+
+/* Ícones SVG */
+.card-icon-box {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
+}
+
+.portal-card:hover .card-icon-box {
+  transform: scale(1.15);
+  color: #fff;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.portal-card h3 {
+  font-family: "Fraunces", serif;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: #fff;
+  background: transparent;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 99px;
+  transition: all 0.3s ease;
+}
+
+.portal-card:hover .card-label {
+  background: #fff;
+  color: #1a0b2e;
+  border-color: #fff;
+}
+
+/* Oracle não sobrescreve o estilo aprimorado */
+body.mode-oracle .portal-card-face {
+  background: rgba(15, 10, 25, 0.65);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ======================
+   EASTER EGGS (FINAL)
+   ====================== */
+
+/* Nota etérea ao entrar no modo Oracle */
+.oracle-enter-note {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.08);
+  padding: 10px 18px;
+  border-radius: 12px;
+  color: #fdf7ff;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0;
+  animation: oracleFade 3s ease forwards;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+@keyframes oracleFade {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
+
+/* Pequenos selos mágicos para seções */
+.section-sigil {
+  position: absolute;
+  top: -22px;
+  right: -10px;
+  font-size: 1.1rem;
+  opacity: 0;
+  color: var(--accent-soft-2);
+  transition: opacity 0.6s ease;
+}
+
+.reveal-on-scroll.is-visible .section-sigil {
+  opacity: 0.7;
+}
+
+/* Mini notação de capítulo */
+.chapter-marker {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  opacity: 0.6;
+}
+
+/* “Scene break” teatral entre blocos */
+.scene-break {
+  width: 100%;
+  text-align: center;
+  margin: 60px 0;
+  opacity: 0.4;
+  font-size: 1.2rem;
+  letter-spacing: 0.25em;
+  color: var(--accent-soft-1);
+  pointer-events: none;
+}
+
+/* ======================
+   PARALLAX SOLAR DO ORACLE
+   ====================== */
+
+body.mode-oracle .oracle-stars-layer {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 80% 40%, rgba(255,255,255,0.9), transparent);
+  background-size: 600px 600px;
+  animation: starsDrift 120s linear infinite;
+  pointer-events: none;
+  z-index: -3;
+}
+
+@keyframes starsDrift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-600px); }
+}
+
+/* Segunda camada */
+body.mode-oracle .oracle-stars-layer-2 {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 20% 70%, rgba(255,255,255,0.5), transparent);
+  background-size: 800px 800px;
+  animation: starsFloat 160s linear infinite;
+  pointer-events: none;
+  z-index: -4;
+}
+
+@keyframes starsFloat {
+  from { transform: translateY(0); }
+  to { transform: translateY(800px); }
+}
+
+/* ======================
+   RITUAIS DAS CARTAS NO PORTAL
+   ====================== */
+
+.portal-card.magician-ritual {
+  animation: magicianFlash 0.6s ease;
+}
+
+@keyframes magicianFlash {
+  0% { filter: brightness(1); }
+  45% { filter: brightness(2); transform: scale(1.05); }
+  100% { filter: brightness(1); transform: scale(1); }
+}
+
+.portal-card.chariot-ritual {
+  animation: chariotSlide 0.5s ease;
+}
+
+@keyframes chariotSlide {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+  100% { transform: translateX(0); }
+}
+
+.portal-card.hanged-ritual {
+  animation: hangedSpin 0.6s ease;
+}
+
+@keyframes hangedSpin {
+  0% { transform: rotate(0); }
+  40% { transform: rotate(180deg); }
+  100% { transform: rotate(0); }
+}
+
+/* ======================
+   FINAL
+   ====================== */
+
+/* === BACK TO PORTAL BUTTON ====================== */
+
+.nav-return {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 125;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+}
+
+.nav-return span {
+  white-space: nowrap;
+}
+
+.nav-return:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* Some modes */
+
+body.mode-oracle .nav-return {
+  background: rgba(18, 11, 32, 0.95);
+  color: #fdf7ff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Visible only fora do portal */
+
+body.view-portal .nav-return {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+}
+
+body:not(.view-portal) .nav-return {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+
+/* === CASE TOOLTIPS – FULL TEXT & ORACLE LEGIBILITY === */
+
+.case[data-tooltip]::after {
+  /* mantém o visual base, mas deixa o texto quebrar */
+  white-space: normal;
+  max-width: 360px;
+  text-overflow: initial;
+  overflow: visible;
+}
+
+/* Ajuste específico para o modo Oracle (sem texto branco em fundo branco) */
+body.mode-oracle .case[data-tooltip]::after {
+  background: #1c1229;
+  color: #fdf7ff;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+}
+
+/* === OVERRIDE: BACK TO PORTAL SEM DEPENDER DO BODY === */
+
+.nav-return {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 125;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Modo Oracle: mesma posição, só cor diferente */
+body.mode-oracle .nav-return {
+  background: rgba(18, 11, 32, 0.95);
+  color: #fdf7ff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
