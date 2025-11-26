@@ -6,7 +6,10 @@
   // =========================
 
   function prefersReducedMotion() {
-    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return (
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
   }
 
   function smoothScrollTo(target) {
@@ -74,20 +77,56 @@
     body.classList.add('view-portal');
     portal.classList.add('active-view');
 
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.portal-card'));
+    var cards = Array.prototype.slice.call(
+      document.querySelectorAll('.portal-card')
+    );
+
     cards.forEach(function (card) {
       var targetId = card.getAttribute('data-target');
+      var arcana = card.getAttribute('data-arcana');
       if (!targetId) return;
       card.setAttribute('tabindex', '0');
 
+      function runCardRitual(callback) {
+        // remove rituais antigos
+        cards.forEach(function (c) {
+          c.classList.remove(
+            'magician-ritual',
+            'chariot-ritual',
+            'hanged-ritual'
+          );
+        });
+
+        var ritualClass = null;
+        if (arcana === 'magician') ritualClass = 'magician-ritual';
+        if (arcana === 'chariot') ritualClass = 'chariot-ritual';
+        if (arcana === 'hanged') ritualClass = 'hanged-ritual';
+
+        if (!ritualClass || prefersReducedMotion()) {
+          if (typeof callback === 'function') callback();
+          return;
+        }
+
+        card.classList.add(ritualClass);
+        setTimeout(function () {
+          card.classList.remove(ritualClass);
+          if (typeof callback === 'function') callback();
+        }, 450);
+      }
+
       function handleActivate(evt) {
         if (evt) {
-          if (evt.type === 'keydown' && !(evt.key === 'Enter' || evt.key === ' ')) {
+          if (
+            evt.type === 'keydown' &&
+            !(evt.key === 'Enter' || evt.key === ' ')
+          ) {
             return;
           }
           evt.preventDefault();
         }
-        showView(targetId);
+        runCardRitual(function () {
+          showView(targetId);
+        });
       }
 
       card.addEventListener('click', handleActivate);
@@ -114,25 +153,86 @@
     );
     if (!buttons.length) return;
 
-    function setMode(mode) {
+    var warpVeil = document.querySelector('.warp-veil');
+    var currentMode = 'stage';
+
+    function showOracleNote() {
+      // nota rápida "The veil lifts."
+      if (!document.body.classList.contains('mode-oracle')) return;
+
+      var note = document.createElement('div');
+      note.className = 'oracle-enter-note';
+      note.textContent = 'The veil lifts.';
+      document.body.appendChild(note);
+
+      setTimeout(function () {
+        if (note && note.parentNode) {
+          note.parentNode.removeChild(note);
+        }
+      }, 3200);
+    }
+
+    function applyMode(mode, opts) {
+      opts = opts || {};
+      if (currentMode === mode) return;
+      currentMode = mode;
+
       buttons.forEach(function (btn) {
         btn.classList.toggle('is-active', btn.getAttribute('data-mode') === mode);
       });
+
       if (mode === 'oracle') {
         body.classList.add('mode-oracle');
       } else {
         body.classList.remove('mode-oracle');
       }
+
+      if (mode === 'oracle' && !opts.skipNote) {
+        showOracleNote();
+      }
+    }
+
+    function runWarpAndSetMode(mode) {
+      if (!warpVeil || prefersReducedMotion()) {
+        applyMode(mode);
+        return;
+      }
+
+      var baseTransform = 'translate(-50%, -50%)';
+
+      // reset
+      warpVeil.style.transition = 'none';
+      warpVeil.style.opacity = '1';
+      warpVeil.style.transform = baseTransform + ' scale(0)';
+      // força reflow
+      void warpVeil.offsetWidth;
+
+      warpVeil.style.transition =
+        'transform 0.6s cubic-bezier(0.75, 0, 0.25, 1), opacity 0.6s ease';
+      warpVeil.style.transform = baseTransform + ' scale(1)';
+
+      // aplica modo logo no começo da animação
+      setTimeout(function () {
+        applyMode(mode);
+      }, 120);
+
+      // recolhe o véu
+      setTimeout(function () {
+        warpVeil.style.transform = baseTransform + ' scale(0)';
+        warpVeil.style.opacity = '0';
+      }, 420);
     }
 
     buttons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var mode = btn.getAttribute('data-mode') || 'stage';
-        setMode(mode);
+        if (mode === currentMode) return;
+        runWarpAndSetMode(mode);
       });
     });
 
-    setMode('stage');
+    // modo inicial sem warp nem nota
+    applyMode('stage', { skipNote: true });
   }
 
   // =========================
@@ -144,7 +244,8 @@
     if (!bar) return;
 
     function update() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop || 0;
       var docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       var progress = docHeight > 0 ? scrollTop / docHeight : 0;
@@ -281,7 +382,8 @@
     if (!btn) return;
 
     function updateVisibility() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop || 0;
       if (scrollTop > 400) {
         btn.classList.add('is-visible');
       } else {
@@ -331,7 +433,14 @@
   // =========================
 
   function initKeyboardShortcuts() {
-    var order = ['#hero', '#about', '#experience', '#how-i-work', '#next-role', '#anticase'];
+    var order = [
+      '#hero',
+      '#about',
+      '#experience',
+      '#how-i-work',
+      '#next-role',
+      '#anticase'
+    ];
 
     document.addEventListener('keydown', function (event) {
       var activeEl = document.activeElement;
@@ -360,19 +469,17 @@
     });
   }
 
-
   // =========================
   // Mystic cursor (Oracle mode)
   // =========================
+
   function initMysticCursor() {
     var halo = document.querySelector('.mystic-cursor');
     if (!halo) return;
 
-    // garante que o cursor começa escondido
     halo.style.opacity = '0';
 
     document.addEventListener('mousemove', function (e) {
-      // só anima no modo oracle
       if (!document.body.classList.contains('mode-oracle')) {
         halo.style.opacity = '0';
         return;
@@ -386,7 +493,43 @@
     });
   }
 
+  // =========================
+  // Glow / Spotlight (botões + xray)
+  // =========================
 
+  function initGlowSpotlights() {
+    var glowTargets = Array.prototype.slice.call(
+      document.querySelectorAll('.btn, .mode-toggle__btn, .mini-nav__item')
+    );
+
+    glowTargets.forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var rect = el.getBoundingClientRect();
+        el.style.setProperty('--x', e.clientX - rect.left + 'px');
+        el.style.setProperty('--y', e.clientY - rect.top + 'px');
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.removeProperty('--x');
+        el.style.removeProperty('--y');
+      });
+    });
+
+    // xray nos arcos dos cases
+    var xrayTargets = Array.prototype.slice.call(
+      document.querySelectorAll('.xray-target')
+    );
+    xrayTargets.forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var rect = el.getBoundingClientRect();
+        el.style.setProperty('--x', e.clientX - rect.left + 'px');
+        el.style.setProperty('--y', e.clientY - rect.top + 'px');
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.removeProperty('--x');
+        el.style.removeProperty('--y');
+      });
+    });
+  }
 
   // =========================
   // Tarot deck (closing cards)
@@ -404,7 +547,10 @@
 
       function flip(evt) {
         if (evt) {
-          if (evt.type === 'keydown' && !(evt.key === 'Enter' || evt.key === ' ')) {
+          if (
+            evt.type === 'keydown' &&
+            !(evt.key === 'Enter' || evt.key === ' ')
+          ) {
             return;
           }
           evt.preventDefault();
@@ -437,7 +583,7 @@
     initMetricsObserver();
     initKeyboardShortcuts();
     initTarotDeck();
-    initMysticCursor(); // ✨ aqui
+    initMysticCursor();
+    initGlowSpotlights();
   });
-
 })();
